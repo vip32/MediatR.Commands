@@ -7,7 +7,7 @@
     using Microsoft.Extensions.Logging;
 
     public class MemoryCacheQueryBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : IQuery<TResponse>
     {
         private readonly IMemoryCache cache;
 
