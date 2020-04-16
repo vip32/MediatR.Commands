@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface ICacheQuery
+    public interface ICachedQuery
     {
         string CacheKey { get; }
 

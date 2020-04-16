@@ -18,7 +18,7 @@
         protected override async Task<TResponse> Process(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             // validate only if implements interface
-            if (!(request is IValidateCommand command))
+            if (!(request is IValidatedCommand command))
             {
                 return await next().ConfigureAwait(false);
             }

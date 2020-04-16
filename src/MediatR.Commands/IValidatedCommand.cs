@@ -2,7 +2,7 @@
 {
     using FluentValidation.Results;
 
-    public interface IValidateCommand
+    public interface IValidatedCommand
     {
         ValidationResult Validate();
     }

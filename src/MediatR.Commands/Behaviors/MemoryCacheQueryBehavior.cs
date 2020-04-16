@@ -20,7 +20,7 @@
         protected override async Task<TResponse> Process(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             // cache only if implements interface
-            if (!(request is ICacheQuery query))
+            if (!(request is ICachedQuery query))
             {
                 return await next().ConfigureAwait(false);
             }

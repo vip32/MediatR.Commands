@@ -15,7 +15,8 @@
 
         protected override async Task<TResponse> Process(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            this.Logger.LogDebug("query: DUMMY");
+            System.Console.Write("+++ DUMMY +++");
+            this.Logger.LogDebug("query: DUMMY"); // BUG: not shown in console log
 
             return await next().ConfigureAwait(false); // continue pipeline
         }
