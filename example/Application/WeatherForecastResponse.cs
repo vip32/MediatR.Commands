@@ -1,8 +1,8 @@
-namespace Stateless.Web.Application
+namespace Application
 {
     using System;
 
-    public class WeatherForecast
+    public class WeatherForecastResponse
     {
         public DateTime Date { get; set; }
 
