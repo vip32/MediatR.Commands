@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using MediatR;
     using MediatR.Commands;
 
     public class WeatherForecastsQuery : IQuery<IEnumerable<WeatherForecastResponse>>, ICacheQuery
