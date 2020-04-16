@@ -8,7 +8,7 @@
     {
         public string CacheKey => "all_weatherforecasts";
 
-        public TimeSpan? SlidingExpiration => new TimeSpan(0, 0, 5);
+        public TimeSpan? SlidingExpiration => new TimeSpan(0, 0, 15);
 
         public DateTimeOffset? AbsoluteExpiration => null;
     }
