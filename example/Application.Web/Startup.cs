@@ -5,6 +5,7 @@ namespace Stateless.Web.Application
     using MediatR.Commands;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -22,9 +23,10 @@ namespace Stateless.Web.Application
         {
             services.AddControllers();
 
+            services.AddSingleton<IMemoryCache>(sp => new MemoryCache(new MemoryCacheOptions()));
             services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
         }
 
