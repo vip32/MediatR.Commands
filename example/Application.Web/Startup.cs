@@ -22,7 +22,7 @@ namespace Stateless.Web.Application
         {
             services.AddControllers();
 
-            services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly, typeof(Command).Assembly });
+            services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
