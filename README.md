@@ -7,8 +7,10 @@ A simple commands & queries extension for the great [MediatR](https://github.com
 
 Startup.cs::ConfigureServices()
 ```
+TODO
 ```
 
 Startup.cs::Configure()
 ```
+TODO
 ```
