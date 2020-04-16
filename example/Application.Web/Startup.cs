@@ -21,8 +21,11 @@ namespace Stateless.Web.Application
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMediatR(new[] { typeof(WeatherForecastsQuery), typeof(Command) });
+
+            services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly, typeof(Command).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

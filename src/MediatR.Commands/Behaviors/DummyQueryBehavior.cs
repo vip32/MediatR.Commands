@@ -5,17 +5,15 @@
     using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class DummyQueryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+    public class DummyQueryBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
+        where TRequest : IQuery<TResponse>
     {
         public DummyQueryBehavior(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
-            this.Logger = loggerFactory.CreateLogger(this.GetType());
         }
 
-        public ILogger Logger { get; }
-
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        protected override async Task<TResponse> Process(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             this.Logger.LogDebug("query: DUMMY");
 
