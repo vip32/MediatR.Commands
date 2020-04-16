@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29924.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_global", "_global", "{EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CB478E82-491C-4633-B1B6-732D86BEF5B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{DD9085AE-3689-4CCC-AF8E-96CE94845AB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1187261C-39AD-46D6-BF52-203DA1ADADE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.Web.Application", "example\MediatR.Commands.Web.Application\MediatR.Commands.Web.Application.csproj", "{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatR.Commands", "src\MediatR.Commands\MediatR.Commands.csproj", "{56B7E17A-ED9B-40D1-801D-17F911A41908}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56B7E17A-ED9B-40D1-801D-17F911A41908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B7E17A-ED9B-40D1-801D-17F911A41908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B7E17A-ED9B-40D1-801D-17F911A41908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B7E17A-ED9B-40D1-801D-17F911A41908}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D} = {DD9085AE-3689-4CCC-AF8E-96CE94845AB3}
+		{56B7E17A-ED9B-40D1-801D-17F911A41908} = {CB478E82-491C-4633-B1B6-732D86BEF5B6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3F04A01-4720-4805-8957-6C749E5595CD}
+	EndGlobalSection
+EndGlobal
