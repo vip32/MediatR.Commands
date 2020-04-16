@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MediatR.Commands</AssemblyName>
+    <RootNamespace>MediatR.Commands</RootNamespace>
+    <PackageId>MediatR.Commands</PackageId>
+    <Description></Description>
+    <Company></Company>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/vip32/MediatR.Commands</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>
