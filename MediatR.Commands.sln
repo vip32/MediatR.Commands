@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29924.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_global", "_global", "{EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines.yml = azure-pipelines.yml
 		Directory.Build.props = Directory.Build.props
@@ -18,9 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1187261C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web", "example\Application.Web\Application.Web.csproj", "{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatR.Commands", "src\MediatR.Commands\MediatR.Commands.csproj", "{56B7E17A-ED9B-40D1-801D-17F911A41908}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands", "src\MediatR.Commands\MediatR.Commands.csproj", "{56B7E17A-ED9B-40D1-801D-17F911A41908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "example\Application\Application.csproj", "{8C335EC2-5AC3-41CD-BFC2-2A904D0EE32E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "example\Application\Application.csproj", "{8C335EC2-5AC3-41CD-BFC2-2A904D0EE32E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
