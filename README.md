@@ -7,7 +7,8 @@ A simple commands & queries extension for the great [MediatR](https://github.com
 
 Startup.cs::ConfigureServices()
 ```
-TODO
+    services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
 ```
 
 Startup.cs::Configure()
