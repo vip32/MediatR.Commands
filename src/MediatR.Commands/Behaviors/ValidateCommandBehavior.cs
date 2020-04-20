@@ -8,7 +8,7 @@
     using Microsoft.Extensions.Logging;
 
     public class ValidateCommandBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
-        where TRequest : ICommand<TResponse>
+        where TRequest : IRequest<TResponse>
     {
         public ValidateCommandBehavior(ILoggerFactory loggerFactory)
             : base(loggerFactory)

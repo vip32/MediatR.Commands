@@ -6,7 +6,7 @@
     using Microsoft.Extensions.Logging;
 
     public class DummyQueryBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
-        where TRequest : IQuery<TResponse>
+        where TRequest : IRequest<TResponse>
     {
         public DummyQueryBehavior(ILoggerFactory loggerFactory)
             : base(loggerFactory)
