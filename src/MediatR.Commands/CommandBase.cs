@@ -2,23 +2,26 @@
 {
     using System;
 
-    public class Command : ICommand
+    public abstract class CommandBase : ICommand
     {
-        public Command()
+        protected CommandBase()
         {
             this.Id = Guid.NewGuid().ToString("N");
+            this.Timestamp = DateTime.UtcNow;
         }
 
-        protected Command(string id)
+        protected CommandBase(string id)
         {
             this.Id = id;
         }
 
         public string Id { get; }
+
+        public DateTimeOffset Timestamp { get; }
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
-    public class Command<TResponse> : Command, ICommand<TResponse>
+    public abstract class CommandBase<TResponse> : CommandBase, ICommand<TResponse>
 #pragma warning restore SA1402 // File may only contain a single type
     {
     }
