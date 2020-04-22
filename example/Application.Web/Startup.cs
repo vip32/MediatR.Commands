@@ -1,4 +1,4 @@
-namespace Stateless.Web.Application
+namespace WeatherForecast.Application.Web
 {
     using global::Application;
     using MediatR;
