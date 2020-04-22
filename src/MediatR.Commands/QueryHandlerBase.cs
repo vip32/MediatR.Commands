@@ -20,19 +20,19 @@
         {
             try
             {
-                this.Logger.LogDebug("query: processing '{request}'", request);
+                this.Logger.LogDebug("query: processing (type={queryType}, id={queryId})", request.GetType().Name, request.Id);
 
                 var timer = Stopwatch.StartNew();
                 var response = await this.Process(request, cancellationToken).ConfigureAwait(false);
                 timer.Stop();
 
-                this.Logger.LogDebug("query: processed '{requestName}' -> took {elapsed} ms", request, timer.ElapsedMilliseconds);
+                this.Logger.LogDebug("query: processed (type={queryType}, id={queryId}) -> took {elapsed} ms", request.GetType().Name, request.Id, timer.ElapsedMilliseconds);
 
                 return response;
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "query: processing error '{requestName}': {errorMessage}", request, ex.Message);
+                this.Logger.LogError(ex, "query: processing error (type={queryType}, id={queryId}): {errorMessage}", request.GetType().Name, request.Id, ex.Message);
                 throw;
             }
         }

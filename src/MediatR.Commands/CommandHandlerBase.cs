@@ -20,19 +20,19 @@
         {
             try
             {
-                this.Logger.LogDebug("command: processing '{request}'", request);
-                var watch = Stopwatch.StartNew();
+                this.Logger.LogDebug("command: processing (type={commandType}, id={commandId})", request.GetType().Name, request.Id);
 
+                var timer = Stopwatch.StartNew();
                 var response = await this.Process(request, cancellationToken).ConfigureAwait(false);
+                timer.Stop();
 
-                watch.Stop();
-                this.Logger.LogDebug("command: processed '{requestName}' -> took {elapsed} ms", request, watch.ElapsedMilliseconds);
+                this.Logger.LogDebug("command: processed (type={commandType}, id={commandId}) -> took {elapsed} ms", request.GetType().Name, request.Id, timer.ElapsedMilliseconds);
 
                 return response;
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "command: processing error '{requestName}': {errorMessage}", request, ex.Message);
+                this.Logger.LogError(ex, "command: processing error (type={commandType}, id={commandId}): {errorMessage}", request.GetType().Name, request.Id, ex.Message);
                 throw;
             }
         }
@@ -56,19 +56,19 @@
         {
             try
             {
-                this.Logger.LogDebug("command: processing '{request}' (id={id})", request, request.Id);
+                this.Logger.LogDebug("command: processing (type={commandType}, id={commandId})", request.GetType().Name, request.Id);
 
                 var timer = Stopwatch.StartNew();
                 var response = await this.Process(request, cancellationToken).ConfigureAwait(false);
                 timer.Stop();
 
-                this.Logger.LogDebug("command: processed '{requestName}' (id={id}) -> took {elapsed} ms", request, request.Id, timer.ElapsedMilliseconds);
+                this.Logger.LogDebug("command: processed (type={commandType}, id={commandId}) -> took {elapsed} ms", request.GetType().Name, request.Id, timer.ElapsedMilliseconds);
 
                 return response;
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "command: processing error '{requestName}' (id={id}): {errorMessage}", request, request.Id, ex.Message);
+                this.Logger.LogError(ex, "command: processing error (type={commandType}, id={commandId}): {errorMessage}", request.GetType().Name, request.Id, ex.Message);
                 throw;
             }
         }
