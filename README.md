@@ -16,3 +16,19 @@ Startup.cs::Configure()
 ```
 TODO
 ```
+
+Controller
+```
+    [ApiController]
+    [Route("weatherforecasts")]
+    public class WeatherForecastController : ControllerBase
+    {
+        ...
+
+        [HttpGet]
+        public async Task<IEnumerable<WeatherForecastResponse>> Get()
+        {
+            return await this.mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
+        }
+    }
+```
