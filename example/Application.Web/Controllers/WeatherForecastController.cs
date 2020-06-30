@@ -19,7 +19,7 @@
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecastResponse>> Get()
+        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get()
         {
             return await this.mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
         }

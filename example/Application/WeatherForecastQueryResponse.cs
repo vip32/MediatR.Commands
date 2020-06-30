@@ -2,7 +2,7 @@ namespace Application
 {
     using System;
 
-    public class WeatherForecastResponse
+    public class WeatherForecastQueryResponse
     {
         public DateTime Date { get; set; }
 

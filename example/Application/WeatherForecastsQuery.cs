@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using MediatR.Commands;
 
-    public class WeatherForecastsQuery : QueryBase<IEnumerable<WeatherForecastResponse>>, ICachedQuery
+    public class WeatherForecastsQuery : QueryBase<IEnumerable<WeatherForecastQueryResponse>>, ICachedQuery
     {
         public string CacheKey => "all_weatherforecasts";
 
