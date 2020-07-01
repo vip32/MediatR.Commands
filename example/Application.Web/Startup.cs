@@ -1,10 +1,13 @@
 namespace WeatherForecast.Application.Web
 {
+    using System.Text.Json;
     using global::Application;
     using MediatR;
     using MediatR.Commands;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -23,11 +26,29 @@ namespace WeatherForecast.Application.Web
         {
             services.AddControllers();
 
+            // commands registrations
             services.AddSingleton<IMemoryCache>(sp => new MemoryCache(new MemoryCacheOptions()));
             services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
+
+            //services.AddCommands();
+
+            // optional authentication
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.Authority = "TODO";
+            //    options.Audience = "TODO";
+            //    options.TokenValidationParameters.ValidateLifetime = true;
+            //    options.TokenValidationParameters.ClockSkew = System.TimeSpan.Zero;
+            //});
+
+            services.AddAuthorization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,11 +61,34 @@ namespace WeatherForecast.Application.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                // command routes
+                //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts");
+                //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts/{DaysOffset:int}");
+
+                // commands routes
+                endpoints.MapGet("/api/weatherforecasts", async context =>
+                {
+                    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                    var response = await mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                });
+                endpoints.MapGet("/api/weatherforecasts/{DaysOffset:int}", async context =>
+                {
+                    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                    var daysOffset = int.Parse((string)context.Request.RouteValues["DaysOffset"]);
+                    var response = await mediator.Send(new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                });
             });
         }
     }

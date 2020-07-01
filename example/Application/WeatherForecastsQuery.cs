@@ -6,7 +6,18 @@
 
     public class WeatherForecastsQuery : QueryBase<IEnumerable<WeatherForecastQueryResponse>>, ICachedQuery
     {
-        public string CacheKey => "all_weatherforecasts";
+        public WeatherForecastsQuery()
+        {
+        }
+
+        public WeatherForecastsQuery(int daysOffset)
+        {
+            this.DaysOffset = daysOffset;
+        }
+
+        public int DaysOffset { get; } = 1;
+
+        public string CacheKey => "all_weatherforecasts_" + this.DaysOffset;
 
         public TimeSpan? SlidingExpiration => new TimeSpan(0, 0, 15);
 
