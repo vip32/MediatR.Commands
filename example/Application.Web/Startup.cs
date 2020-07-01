@@ -73,7 +73,7 @@ namespace WeatherForecast.Application.Web
                 //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts");
                 //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts/{DaysOffset:int}");
 
-                // commands routes
+                // commands routes (without controllers)
                 endpoints.MapGet("/api/weatherforecasts", async context =>
                 {
                     var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
