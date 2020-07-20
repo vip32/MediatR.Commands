@@ -19,10 +19,4 @@
 
         public DateTimeOffset Timestamp { get; }
     }
-
-#pragma warning disable SA1402 // File may only contain a single type
-    public abstract class CommandBase<TResponse> : CommandBase, ICommand<TResponse>
-#pragma warning restore SA1402 // File may only contain a single type
-    {
-    }
 }
