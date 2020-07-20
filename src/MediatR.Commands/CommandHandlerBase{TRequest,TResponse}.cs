@@ -6,8 +6,8 @@
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
 
-    public abstract class CommandHandlerBase<TRequest> : IRequestHandler<TRequest>
-        where TRequest : ICommand
+    public abstract class CommandHandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+        where TRequest : ICommand<TResponse>
     {
         protected CommandHandlerBase(ILoggerFactory loggerFactory)
         {
@@ -16,7 +16,7 @@
 
         protected ILogger Logger { get; }
 
-        public virtual async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
+        public virtual async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
         {
             try
             {
@@ -37,6 +37,6 @@
             }
         }
 
-        protected abstract Task<Unit> Process(TRequest request, CancellationToken cancellationToken);
+        protected abstract Task<TResponse> Process(TRequest request, CancellationToken cancellationToken);
     }
 }
