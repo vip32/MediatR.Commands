@@ -1,9 +1,8 @@
 ﻿namespace MediatR.Commands
 {
     using System;
-    using MediatR;
 
-    public interface IQuery<out TResponse> : IRequest<TResponse>
+    public interface IQuery
     {
         string Id { get; }
 

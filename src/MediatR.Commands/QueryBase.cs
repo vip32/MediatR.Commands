@@ -1,9 +1,8 @@
 ﻿namespace MediatR.Commands
 {
     using System;
-    using MediatR;
 
-    public abstract class QueryBase<TResponse> : IQuery<TResponse>
+    public abstract class QueryBase : IQuery
     {
         protected QueryBase()
         {

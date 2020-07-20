@@ -19,21 +19,31 @@
 
         public virtual async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            var id = string.Empty;
+            if (request is ICommand command)
+            {
+                id = command.Id;
+            }
+            else if (request is IQuery query)
+            {
+                id = query.Id;
+            }
+
             try
             {
-                this.Logger.LogDebug("Processing pipeline request '{request}' ...", request);
-                var watch = Stopwatch.StartNew();
+                this.Logger.LogDebug("behavior: processing (type={behaviorType}, id={commandId})", this.GetType().Name, id);
 
+                var timer = Stopwatch.StartNew();
                 var response = await this.Process(request, cancellationToken, next).ConfigureAwait(false);
+                timer.Stop();
 
-                watch.Stop();
-                this.Logger.LogDebug("Processed pipeline request '{request}' -> took {elapsed} ms", request, watch.ElapsedMilliseconds);
+                this.Logger.LogDebug("behavior: processed (type={behaviorType}, id={commandId}) -> took {elapsed} ms", this.GetType().Name, id, timer.ElapsedMilliseconds);
 
                 return response;
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "Error handling pipeline request '{request}': {errorMessage}", request, ex.Message);
+                this.Logger.LogError(ex, "behavior: processing error (type={behaviorType}, id={commandId}): {errorMessage}", this.GetType().Name, id, ex.Message);
                 throw;
             }
         }
