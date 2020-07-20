@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<AssemblyName>MediatR.Commands.Web</AssemblyName>
+		<RootNamespace>MediatR.Commands</RootNamespace>
+		<LangVersion>8.0</LangVersion>
+		<PackageId>MediatR.Commands.Web</PackageId>
+		<Description></Description>
+		<Company></Company>
+		<Copyright></Copyright>
+		<PackageProjectUrl>https://github.com/vip32/MediatR.Commands</PackageProjectUrl>
+		<PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+	</PropertyGroup>
+
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	<PackageReference Include="MediatR" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediatR.Commands\MediatR.Commands.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Swagger\" />
+  </ItemGroup>
+
+</Project>

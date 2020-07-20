@@ -4,7 +4,6 @@ namespace WeatherForecast.Application.Web
     using global::Application;
     using MediatR;
     using MediatR.Commands;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -33,7 +32,7 @@ namespace WeatherForecast.Application.Web
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
 
-            //services.AddCommands();
+            services.AddCommandEndpoints();
 
             // optional authentication
             //services.AddAuthentication(options =>
@@ -89,6 +88,9 @@ namespace WeatherForecast.Application.Web
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
                 });
+
+                endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts2");
+                endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts2/{DaysOffset:int}");
             });
         }
     }

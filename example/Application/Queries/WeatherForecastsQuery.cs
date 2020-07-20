@@ -15,7 +15,7 @@
             this.DaysOffset = daysOffset;
         }
 
-        public int DaysOffset { get; } = 1;
+        public int DaysOffset { get; set; } = 1;
 
         public string CacheKey => "all_weatherforecasts_" + this.DaysOffset;
 
