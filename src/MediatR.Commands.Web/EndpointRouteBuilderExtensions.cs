@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -11,6 +12,7 @@
     using Microsoft.AspNetCore.Routing.Template;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public static partial class EndpointRouteBuilderExtensions
     {
@@ -94,10 +96,10 @@
 
         private static async Task CommandEndpointRequestDelegate(HttpContext context)
         {
+            var timer = Stopwatch.StartNew();
             var endpoint = context.GetEndpoint();
             var registrationItem = endpoint.Metadata.GetMetadata<CommandEndpointRegistrationItem>();
-
-            // TODO: log inbound command request
+            var logger = context.RequestServices.GetService<ILoggerFactory>().CreateLogger(registrationItem.RequestType);
 
             object requestModel;
             if (context.Request.ContentLength.GetValueOrDefault() != 0)
@@ -122,6 +124,18 @@
                 requestModel = Activator.CreateInstance(registrationItem.RequestType);
             }
 
+            var id = string.Empty;
+            if (requestModel is ICommand command)
+            {
+                id = command.Id;
+            }
+            else if (requestModel is IQuery query)
+            {
+                id = query.Id;
+            }
+
+            logger.LogDebug("request: starting (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registrationItem.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
+
             // map path and querystring values to created request model
             var parameterItems = GetParameterValues(registrationItem.Pattern, context.Request.Path, context.Request.QueryString.Value);
             ReflectionHelper.SetProperties(requestModel, parameterItems);
@@ -138,6 +152,8 @@
                 context.RequestAborted).ConfigureAwait(false);
 
             await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
+            timer.Stop();
+            logger.LogDebug("request: finished (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registrationItem.RequestType.Name, id, timer.ElapsedMilliseconds);
         }
 
         private static IDictionary<string, object> GetParameterValues(string pattern, string requestPath, string query = null)
