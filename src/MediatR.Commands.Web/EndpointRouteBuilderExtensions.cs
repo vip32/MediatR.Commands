@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text.Json;
@@ -20,95 +21,126 @@
         public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK, Func<TQuery, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TQuery : IQuery
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapQuery<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapGet<TQuery, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK, Func<TQuery, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
-            where TQuery : IQuery<TResponse>
+            where TQuery : IQuery, IQuery<TResponse>
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapQuery<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPost<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
-            where TCommand : ICommand<TResponse>
+            where TCommand : ICommand, ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPut<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
-            where TCommand : ICommand<TResponse>
+            where TCommand : ICommand, ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.NoContent, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapDelete<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.NoContent, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
-            where TCommand : ICommand<TResponse>
+            where TCommand : ICommand, ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPatch<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
         }
 
         public static void MapPatch<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
-            where TCommand : ICommand<TResponse>
+            where TCommand : ICommand, ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
+            endpoints.MapCommand<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        private static void Map<TRequest>(
+        private static void MapQuery<TQuery>(
             this IEndpointRouteBuilder endpoints,
             string pattern,
             HttpMethod method,
             HttpStatusCode onSuccessStatusCode,
-            Func<TRequest, HttpContext, Task> onSuccess = null,
+            Func<TQuery, HttpContext, Task> onSuccess = null,
             OpenApiDetails openApi = null)
+            where TQuery : IQuery
         {
             if (pattern.IsNullOrEmpty())
             {
-                throw new ArgumentNullException($"{typeof(TRequest)} cannot be registered with a null or empty route pattern.");
+                throw new ArgumentNullException($"{typeof(TQuery)} cannot be registered with a null or empty route pattern.");
             }
 
             var mediator = endpoints.ServiceProvider.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator has not been added to IServiceCollection. You can add it with services.AddMediatR(...);");
             var registrations = endpoints.ServiceProvider.GetService<ICommandEndpointRegistrations>() // =singleton
                 ?? throw new InvalidOperationException("ICommandEndpointRegistrations has not been added to IServiceCollection. You can add it with services.AddCommandEndpoints(...);");
-            var registrationItem = registrations.Add<TRequest>(pattern, method);
+            var registrationItem = registrations.AddQuery<TQuery>(pattern, method);
             registrationItem.OnSuccessStatusCode = onSuccessStatusCode;
             registrationItem.OpenApi = openApi;
-            //registrationItem.OnSuccess = onSuccess;
+            registrationItem.OnSuccess = onSuccess;
 
             var builder = endpoints.MapGet(pattern, CommandEndpointRequestDelegate);
             builder.WithDisplayName(registrationItem.Name);
             builder.WithMetadata(registrationItem);
         }
 
+        private static void MapCommand<TCommand>(
+            this IEndpointRouteBuilder endpoints,
+            string pattern,
+            HttpMethod method,
+            HttpStatusCode onSuccessStatusCode,
+            Func<TCommand, HttpContext, Task> onSuccess = null,
+            OpenApiDetails openApi = null)
+            where TCommand : ICommand
+        {
+            if (pattern.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException($"{typeof(TCommand)} cannot be registered with a null or empty route pattern.");
+            }
+
+            var mediator = endpoints.ServiceProvider.GetService<IMediator>()
+                ?? throw new InvalidOperationException("IMediator has not been added to IServiceCollection. You can add it with services.AddMediatR(...);");
+            var registrations = endpoints.ServiceProvider.GetService<ICommandEndpointRegistrations>() // =singleton
+                ?? throw new InvalidOperationException("ICommandEndpointRegistrations has not been added to IServiceCollection. You can add it with services.AddCommandEndpoints(...);");
+            var registrationItem = registrations.AddCommand<TCommand>(pattern, method);
+            registrationItem.OnSuccessStatusCode = onSuccessStatusCode;
+            registrationItem.OpenApi = openApi;
+            registrationItem.OnSuccess = onSuccess;
+
+            var builder = endpoints.MapGet(pattern, CommandEndpointRequestDelegate);
+            builder.WithDisplayName(registrationItem.Name);
+            builder.WithMetadata(registrationItem); // must be last
+        }
+
         private static async Task CommandEndpointRequestDelegate(HttpContext context)
         {
             var timer = Stopwatch.StartNew();
             var endpoint = context.GetEndpoint();
-            var registrationItem = endpoint.Metadata.GetMetadata<CommandEndpointRegistrationItem>();
+#pragma warning disable CA1826 // Do not use Enumerable methods on indexable collections. Instead use the collection directly
+            var registrationItem = endpoint.Metadata.Last() as CommandEndpointRegistrationItem; //.GetMetadata<CommandEndpointRegistrationItem>();
+#pragma warning restore CA1826 // Do not use Enumerable methods on indexable collections. Instead use the collection directly
             var logger = context.RequestServices.GetService<ILoggerFactory>().CreateLogger(registrationItem.RequestType);
 
             object requestModel;
@@ -157,7 +189,7 @@
             await JsonSerializer.SerializeAsync(
                 context.Response.Body,
                 response,
-                registrationItem.ResponseType,
+                response.GetType() ?? registrationItem.ResponseType,
                 null,
                 context.RequestAborted).ConfigureAwait(false);
 

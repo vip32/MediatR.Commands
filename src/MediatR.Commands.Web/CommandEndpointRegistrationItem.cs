@@ -28,4 +28,17 @@
 
         public OpenApiDetails OpenApi { get; internal set; }
     }
+
+#pragma warning disable SA1402 // File may only contain a single type
+    public class CommandEndpointRegistrationQueryItem<TQuery> : CommandEndpointRegistrationItem
+        where TQuery : IQuery
+    {
+        public new Func<TQuery, HttpContext, Task> OnSuccess { get; set; }
+    }
+
+    public class CommandEndpointRegistrationCommandItem<TCommand> : CommandEndpointRegistrationItem
+        where TCommand : ICommand
+    {
+        public new Func<TCommand, HttpContext, Task> OnSuccess { get; set; }
+    }
 }
