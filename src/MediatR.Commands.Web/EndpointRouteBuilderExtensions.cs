@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Net;
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -16,67 +17,73 @@
 
     public static partial class EndpointRouteBuilderExtensions
     {
-        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK, Func<TQuery, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TQuery : IQuery
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get);
+            endpoints.Map<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapGet<TQuery, TResponse>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapGet<TQuery, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK, Func<TQuery, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TQuery : IQuery<TResponse>
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get);
+            endpoints.Map<TQuery>(pattern, HttpMethod.Get, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPost<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPost<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Post, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPut<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPut<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Put, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.NoContent, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapDelete<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapDelete<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.NoContent, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPatch<TCommand>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPatch<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Patch);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        public static void MapPatch<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern)
+        public static void MapPatch<TCommand, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, HttpStatusCode onSuccessStatusCode = HttpStatusCode.Accepted, Func<TCommand, HttpContext, Task> onSuccess = null, OpenApiDetails openApi = null)
             where TCommand : ICommand<TResponse>
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Patch);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Patch, onSuccessStatusCode, onSuccess, openApi);
         }
 
-        private static void Map<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, HttpMethod method)
+        private static void Map<TRequest>(
+            this IEndpointRouteBuilder endpoints,
+            string pattern,
+            HttpMethod method,
+            HttpStatusCode onSuccessStatusCode,
+            Func<TRequest, HttpContext, Task> onSuccess = null,
+            OpenApiDetails openApi = null)
         {
             if (pattern.IsNullOrEmpty())
             {
@@ -88,6 +95,9 @@
             var registrations = endpoints.ServiceProvider.GetService<ICommandEndpointRegistrations>() // =singleton
                 ?? throw new InvalidOperationException("ICommandEndpointRegistrations has not been added to IServiceCollection. You can add it with services.AddCommandEndpoints(...);");
             var registrationItem = registrations.Add<TRequest>(pattern, method);
+            registrationItem.OnSuccessStatusCode = onSuccessStatusCode;
+            registrationItem.OpenApi = openApi;
+            //registrationItem.OnSuccess = onSuccess;
 
             var builder = endpoints.MapGet(pattern, CommandEndpointRequestDelegate);
             builder.WithDisplayName(registrationItem.Name);

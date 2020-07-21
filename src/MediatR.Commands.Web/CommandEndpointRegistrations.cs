@@ -1,5 +1,6 @@
 ﻿namespace MediatR.Commands
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -20,7 +21,9 @@
                 Pattern = pattern,
                 Method = method,
                 RequestType = typeof(TRequest),
-                ResponseType = typeof(TRequest).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>)).GetGenericArguments()[0]
+                ResponseType = typeof(TRequest).PrettyName().Contains(",", StringComparison.OrdinalIgnoreCase)
+                    ? typeof(TRequest).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>)).GetGenericArguments()[0]
+                    : null
             };
 
             this.items.Add(routeItem);
