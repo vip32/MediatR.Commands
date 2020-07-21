@@ -4,23 +4,26 @@
     using System.Linq;
     using System.Net.Http;
 
-    public class RouteTable : IRouteTable
+    public class CommandEndpointRegistrations : ICommandEndpointRegistrations
     {
-        private List<RouteItem> routeItems;
+        private List<CommandEndpointRegistrationItem> items;
 
-        public RouteItem AddRoute<TRequest>(string pattern, HttpMethod method)
+        public IEnumerable<CommandEndpointRegistrationItem> Items => this.items;
+
+        public CommandEndpointRegistrationItem Add<TRequest>(string pattern, HttpMethod method)
         {
-            this.routeItems ??= new List<RouteItem>();
+            this.items ??= new List<CommandEndpointRegistrationItem>();
 
-            var routeItem = new RouteItem
+            var routeItem = new CommandEndpointRegistrationItem
             {
+                Name = typeof(TRequest).Name,
                 Pattern = pattern,
                 Method = method,
                 RequestType = typeof(TRequest),
                 ResponseType = typeof(TRequest).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>)).GetGenericArguments()[0]
             };
 
-            this.routeItems.Add(routeItem);
+            this.items.Add(routeItem);
 
             return routeItem;
         }

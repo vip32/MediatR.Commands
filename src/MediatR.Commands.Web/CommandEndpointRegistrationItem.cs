@@ -3,8 +3,10 @@
     using System;
     using System.Net.Http;
 
-    public class RouteItem
+    public class CommandEndpointRegistrationItem
     {
+        public string Name { get; set; }
+
         public string Pattern { get; set; }
 
         public HttpMethod Method { get; set; }

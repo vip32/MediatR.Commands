@@ -6,7 +6,7 @@
     {
         public static IServiceCollection AddCommandEndpoints(this IServiceCollection services)
         {
-            services.AddSingleton<IRouteTable, RouteTable>();
+            services.AddSingleton<ICommandEndpointRegistrations, CommandEndpointRegistrations>();
 
             return services;
         }
