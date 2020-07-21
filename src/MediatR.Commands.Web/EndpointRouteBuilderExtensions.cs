@@ -61,7 +61,7 @@
             }
 
             // map path and querystring values to created model
-            var values = GetValues(routeItem.Pattern, context.Request.Path, context.Request.QueryString.Value);
+            var values = GetParameterValues(routeItem.Pattern, context.Request.Path, context.Request.QueryString.Value);
             // TODO: set values on model
             SetProperties(model, values);
 
@@ -79,16 +79,16 @@
             await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
         }
 
-        private static IDictionary<string, object> GetValues(string pattern, string requestPath, string query = null)
+        private static IDictionary<string, object> GetParameterValues(string pattern, string requestPath, string query = null)
         {
-            // path values
+            // path parameter values
             var template = TemplateParser.Parse(pattern.SliceTill("?"));
             var matcher = new TemplateMatcher(template, GetDefaults(template));
             var values = new RouteValueDictionary();
             matcher.TryMatch(requestPath.StartsWith("/", StringComparison.OrdinalIgnoreCase) ? requestPath : $"/{requestPath}", values);
             var result = EnsureParameterConstraints(template, values);
 
-            // querystring values
+            // query parameter values
             if (!query.IsNullOrEmpty())
             {
                 foreach (var queryItem in QueryHelpers.ParseQuery(query))
@@ -168,17 +168,17 @@
             return result;
         }
 
-        private static void SetProperties(object instance, IDictionary<string, object> properties)
+        private static void SetProperties(object instance, IDictionary<string, object> propertyItems)
         {
             foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                foreach (var item in properties.Safe())
+                foreach (var propertyItem in propertyItems.Safe())
                 {
                     var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
 
-                    if (item.Key.SafeEquals(propertyInfo.Name) && item.Value != null && propertyInfo.CanWrite)
+                    if (propertyItem.Key.SafeEquals(propertyInfo.Name) && propertyItem.Value != null && propertyInfo.CanWrite)
                     {
-                        propertyInfo.SetValue(instance, item.Value.To(propertyType), null);
+                        propertyInfo.SetValue(instance, propertyItem.Value.To(propertyType), null);
                     }
                 }
             }
