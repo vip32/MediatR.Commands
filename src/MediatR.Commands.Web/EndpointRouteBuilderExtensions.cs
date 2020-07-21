@@ -127,11 +127,11 @@
             var id = string.Empty;
             if (requestModel is ICommand command)
             {
-                id = command.Id;
+                id = command.CommandId;
             }
             else if (requestModel is IQuery query)
             {
-                id = query.Id;
+                id = query.QueryId;
             }
 
             logger.LogDebug("request: starting (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registrationItem.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
