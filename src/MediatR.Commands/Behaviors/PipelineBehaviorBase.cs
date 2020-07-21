@@ -19,16 +19,17 @@
 
         public virtual async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            var type = this.GetType().Name;
             var id = string.Empty;
             if (request is ICommand command)
             {
                 id = command.CommandId;
-                this.Logger.LogDebug("behavior: processing (type={behaviorType}, id={commandId})", this.GetType().Name, id);
+                this.Logger.LogDebug("behavior: processing (type={behaviorType}, id={commandId})", type, id);
             }
             else if (request is IQuery query)
             {
                 id = query.QueryId;
-                this.Logger.LogDebug("behavior: processing (type={behaviorType}, id={queryId})", this.GetType().Name, id);
+                this.Logger.LogDebug("behavior: processing (type={behaviorType}, id={queryId})", type, id);
             }
 
             try
@@ -39,11 +40,11 @@
 
                 if (request is ICommand)
                 {
-                    this.Logger.LogDebug("behavior: processed (type={behaviorType}, id={commandId}) -> took {elapsed} ms", this.GetType().Name, id, timer.ElapsedMilliseconds);
+                    this.Logger.LogDebug("behavior: processed (type={behaviorType}, id={commandId}) -> took {elapsed} ms", type, id, timer.ElapsedMilliseconds);
                 }
                 else if (request is IQuery)
                 {
-                    this.Logger.LogDebug("behavior: processed (type={behaviorType}, id={queryId}) -> took {elapsed} ms", this.GetType().Name, id, timer.ElapsedMilliseconds);
+                    this.Logger.LogDebug("behavior: processed (type={behaviorType}, id={queryId}) -> took {elapsed} ms", type, id, timer.ElapsedMilliseconds);
                 }
 
                 return response;
@@ -52,11 +53,11 @@
             {
                 if (request is ICommand)
                 {
-                    this.Logger.LogError(ex, "behavior: processing error (type={behaviorType}, id={commandId}): {errorMessage}", this.GetType().Name, id, ex.Message);
+                    this.Logger.LogError(ex, "behavior: processing error (type={behaviorType}, id={commandId}): {errorMessage}", type, id, ex.Message);
                 }
                 else if (request is IQuery)
                 {
-                    this.Logger.LogError(ex, "behavior: processing error (type={behaviorType}, id={queryId}): {errorMessage}", this.GetType().Name, id, ex.Message);
+                    this.Logger.LogError(ex, "behavior: processing error (type={behaviorType}, id={queryId}): {errorMessage}", type, id, ex.Message);
                 }
 
                 throw;
