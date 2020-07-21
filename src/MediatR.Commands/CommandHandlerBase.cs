@@ -18,21 +18,22 @@
 
         public virtual async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken)
         {
+            var type = request.GetType().Name;
             try
             {
-                this.Logger.LogDebug("command: processing (type={commandType}, id={commandId})", request.GetType().Name, request.Id);
+                this.Logger.LogDebug("command: processing (type={commandType}, id={commandId})", type, request.CommandId);
 
                 var timer = Stopwatch.StartNew();
                 var response = await this.Process(request, cancellationToken).ConfigureAwait(false);
                 timer.Stop();
 
-                this.Logger.LogDebug("command: processed (type={commandType}, id={commandId}) -> took {elapsed} ms", request.GetType().Name, request.Id, timer.ElapsedMilliseconds);
+                this.Logger.LogDebug("command: processed (type={commandType}, id={commandId}) -> took {elapsed} ms", type, request.CommandId, timer.ElapsedMilliseconds);
 
                 return response;
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "command: processing error (type={commandType}, id={commandId}): {errorMessage}", request.GetType().Name, request.Id, ex.Message);
+                this.Logger.LogError(ex, "command: processing error (type={commandType}, id={commandId}): {errorMessage}", type, request.CommandId, ex.Message);
                 throw;
             }
         }

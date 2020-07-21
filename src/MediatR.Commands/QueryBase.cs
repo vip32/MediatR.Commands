@@ -6,17 +6,17 @@
     {
         protected QueryBase()
         {
-            this.Id = Guid.NewGuid().ToString("N");
-            this.Timestamp = DateTime.UtcNow;
+            this.QueryId = Guid.NewGuid().ToString("N");
+            this.QueryTimestamp = DateTime.UtcNow;
         }
 
         protected QueryBase(string id)
         {
-            this.Id = id;
+            this.QueryId = id;
         }
 
-        public string Id { get; }
+        public string QueryId { get; }
 
-        public DateTimeOffset Timestamp { get; }
+        public DateTimeOffset QueryTimestamp { get; }
     }
 }

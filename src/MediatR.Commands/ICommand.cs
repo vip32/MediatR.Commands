@@ -5,15 +5,15 @@
 
     public interface ICommand : IRequest
     {
-        string Id { get; }
+        string CommandId { get; }
 
-        DateTimeOffset Timestamp { get; }
+        DateTimeOffset CommandTimestamp { get; }
     }
 
     public interface ICommand<out TResponse> : IRequest<TResponse>
     {
-        string Id { get; }
+        string CommandId { get; }
 
-        DateTimeOffset Timestamp { get; }
+        DateTimeOffset CommandTimestamp { get; }
     }
 }

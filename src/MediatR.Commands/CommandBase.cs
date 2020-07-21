@@ -6,17 +6,17 @@
     {
         protected CommandBase()
         {
-            this.Id = Guid.NewGuid().ToString("N");
-            this.Timestamp = DateTime.UtcNow;
+            this.CommandId = Guid.NewGuid().ToString("N");
+            this.CommandTimestamp = DateTime.UtcNow;
         }
 
         protected CommandBase(string id)
         {
-            this.Id = id;
+            this.CommandId = id;
         }
 
-        public string Id { get; }
+        public string CommandId { get; }
 
-        public DateTimeOffset Timestamp { get; }
+        public DateTimeOffset CommandTimestamp { get; }
     }
 }

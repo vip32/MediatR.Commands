@@ -4,8 +4,8 @@
 
     public interface IQuery
     {
-        string Id { get; }
+        string QueryId { get; }
 
-        DateTimeOffset Timestamp { get; }
+        DateTimeOffset QueryTimestamp { get; }
     }
 }
