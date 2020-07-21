@@ -97,6 +97,8 @@
             var endpoint = context.GetEndpoint();
             var registrationItem = endpoint.Metadata.GetMetadata<CommandEndpointRegistrationItem>();
 
+            // TODO: log inbound command request
+
             object requestModel;
             if (context.Request.ContentLength.GetValueOrDefault() != 0)
             {
