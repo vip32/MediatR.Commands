@@ -16,14 +16,11 @@
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="MediatR" Version="8.0.1" />
+	<PackageReference Include="NSwag.AspNetCore" Version="13.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MediatR.Commands\MediatR.Commands.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Swagger\" />
   </ItemGroup>
 
 </Project>

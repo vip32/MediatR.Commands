@@ -4,12 +4,15 @@ namespace WeatherForecast.Application.Web
     using System.Linq;
     using System.Net;
     using System.Text.Json;
+    using System.Threading.Tasks;
     using global::Application;
     using MediatR;
     using MediatR.Commands;
+    using MediatR.Commands.OpenApi;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +40,10 @@ namespace WeatherForecast.Application.Web
 
             services.AddCommandEndpoints();
 
+            //services.AddSingleton<IApiDescriptionGroupCollectionProvider, CommandEndpointApiDescriptionGroupCollectionProvider>();
+            services.AddSingleton<IApiDescriptionGroupCollectionProvider, ApiDescriptionGroupCollectionProvider>();
+            services.AddOpenApiDocument(document => document.DocumentName = "v1");
+
             // optional authentication
             //services.AddAuthentication(options =>
             //{
@@ -60,6 +67,11 @@ namespace WeatherForecast.Application.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            var a = app.ApplicationServices.GetRequiredService<IApiDescriptionGroupCollectionProvider>();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -69,6 +81,12 @@ namespace WeatherForecast.Application.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.Map("/", context =>
+                {
+                    context.Response.Redirect("/swagger");
+                    return Task.CompletedTask;
+                });
+
                 endpoints.MapControllers();
 
                 // commands routes (without controllers)
