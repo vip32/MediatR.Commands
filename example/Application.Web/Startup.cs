@@ -89,7 +89,7 @@ namespace WeatherForecast.Application.Web
                 });
 
                 // command routes (registrations)
-                endpoints.MapGet<WeatherForecastsQuery>("/reg/weatherforecasts/minimal");
+                endpoints.MapGet<WeatherForecastsQuery>("/reg/weatherforecasts/minimal"); // --> send to WeatherForecastsQueryHandler
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts",

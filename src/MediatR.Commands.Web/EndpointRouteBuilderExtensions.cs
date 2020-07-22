@@ -16,25 +16,25 @@
 
     public static partial class EndpointRouteBuilderExtensions
     {
-        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, ICommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TQuery : IQuery
         {
             endpoints.Map<TQuery>(pattern, HttpMethod.Get, response, openApi);
         }
 
-        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, ICommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(pattern, HttpMethod.Post, response, openApi);
         }
 
-        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, ICommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(pattern, HttpMethod.Put, response, openApi);
         }
 
-        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, ICommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(pattern, HttpMethod.Delete, response, openApi);
@@ -44,7 +44,7 @@
             this IEndpointRouteBuilder endpoints,
             string pattern,
             HttpMethod method,
-            ICommandEndpointResponse response = null,
+            CommandEndpointResponse response = null,
             OpenApiDetails openApi = null)
         {
             if (pattern.IsNullOrEmpty())
