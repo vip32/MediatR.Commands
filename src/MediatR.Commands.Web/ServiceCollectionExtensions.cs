@@ -6,7 +6,7 @@
     {
         public static IServiceCollection AddCommandEndpoints(this IServiceCollection services)
         {
-            services.AddSingleton<ICommandEndpointRegistrations, CommandEndpointRegistrations>();
+            services.AddSingleton<ICommandEndpointConfiguration, CommandEndpointConfiguration>();
 
             return services;
         }

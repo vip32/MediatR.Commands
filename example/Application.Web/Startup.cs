@@ -71,10 +71,6 @@ namespace WeatherForecast.Application.Web
             {
                 endpoints.MapControllers();
 
-                // command routes
-                //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts");
-                //endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts/{DaysOffset:int}");
-
                 // commands routes (without controllers)
                 endpoints.MapGet("/api/weatherforecasts", async context =>
                 {
@@ -92,25 +88,37 @@ namespace WeatherForecast.Application.Web
                     await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
                 });
 
+                // command routes (registrations)
+                endpoints.MapGet<WeatherForecastsQuery>("/reg/weatherforecasts/minimal");
+
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/api/weatherforecasts2",
-                    new CommandEndpointResponseQuery<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>
-                    {
-                        OnSuccessStatusCode = HttpStatusCode.OK,
-                        OnSuccess = (req, res, ctx) => ctx.Response.Location($"api/customers/{req.QueryId}/{res.Count()}") // typed req, res
-                    },
-                    new OpenApiDetails
+                    pattern: "/reg/weatherforecasts",
+                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
+                        onSuccess: (req, res, ctx) => ctx.Response.Location($"api/customers/{req.QueryId}/{res.Count()}"),
+                        onSuccessStatusCode: HttpStatusCode.OK),
+                    openApi: new OpenApiDetails
                     {
                         GroupName = "test",
                         Summary = "test"
                     });
+
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/api/weatherforecasts2/{DaysOffset:int}",
-                    new CommandEndpointResponse
-                    {
-                        OnSuccessStatusCode = HttpStatusCode.OK,
-                        OnSuccess = (req, res, ctx) => ctx.Response.Location("api/customers") // no req, res
-                    });
+                    pattern: "/reg/weatherforecasts/{DaysOffset:int}",
+                    response: new CommandEndpointResponse(
+                        onSuccess: (req, res, ctx) => ctx.Response.Location("api/customers"),
+                        onSuccessStatusCode: HttpStatusCode.OK));
+
+                endpoints.MapPost<DoItCommand>(
+                    pattern: "reg/doit",
+                    response: new CommandEndpointResponse(
+                        onSuccess: (req, res, ctx) => ctx.Response.Location("api/doit"),
+                        onSuccessStatusCode: HttpStatusCode.Created));
+
+                endpoints.MapPost<DoItCommand>(
+                    pattern: "reg/doit2",
+                    response: new CommandEndpointResponse<DoItCommand>(
+                        onSuccess: (req, ctx) => ctx.Response.Location($"api/doit/{req.FirstName}_{req.LastName}"),
+                        onSuccessStatusCode: HttpStatusCode.Created));
             });
         }
     }

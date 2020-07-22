@@ -9,8 +9,4 @@
     <ProjectReference Include="..\..\src\MediatR.Commands\MediatR.Commands.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-
 </Project>
