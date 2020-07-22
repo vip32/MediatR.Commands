@@ -10,23 +10,40 @@
 
         public IEnumerable<CommandEndpointRegistrationItem> Items => this.items;
 
-        public CommandEndpointRegistrationQueryItem<TQuery> AddQuery<TQuery>(string pattern, HttpMethod method)
-           where TQuery : IQuery
+        public CommandEndpointRegistrationItem Add<TRequest>(string pattern, HttpMethod method)
         {
             this.items ??= new List<CommandEndpointRegistrationItem>();
-            var item = new CommandEndpointRegistrationQueryItem<TQuery>
+            var item = new CommandEndpointRegistrationItem
             {
-                Name = typeof(TQuery).Name,
+                Name = typeof(TRequest).Name,
                 Pattern = pattern,
                 Method = method,
-                RequestType = typeof(TQuery),
-                ResponseType = typeof(TQuery).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>))?.GetGenericArguments()?[0]
+                RequestType = typeof(TRequest),
+                ResponseType = typeof(TRequest).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>))?.GetGenericArguments()?[0]
             };
 
             this.items.Add(item);
 
             return item;
         }
+
+        //public CommandEndpointRegistrationQueryItem<TQuery> AddQuery<TQuery>(string pattern, HttpMethod method)
+        //   where TQuery : IQuery
+        //{
+        //    this.items ??= new List<CommandEndpointRegistrationItem>();
+        //    var item = new CommandEndpointRegistrationQueryItem<TQuery>
+        //    {
+        //        Name = typeof(TQuery).Name,
+        //        Pattern = pattern,
+        //        Method = method,
+        //        RequestType = typeof(TQuery),
+        //        ResponseType = typeof(TQuery).GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequest<>))?.GetGenericArguments()?[0]
+        //    };
+
+        //    this.items.Add(item);
+
+        //    return item;
+        //}
 
         public CommandEndpointRegistrationCommandItem<TCommand> AddCommand<TCommand>(string pattern, HttpMethod method)
             where TCommand : ICommand

@@ -7,8 +7,10 @@
     {
         IEnumerable<CommandEndpointRegistrationItem> Items { get; }
 
-        CommandEndpointRegistrationQueryItem<TQuery> AddQuery<TQuery>(string pattern, HttpMethod method)
-            where TQuery : IQuery;
+        CommandEndpointRegistrationItem Add<TRequest>(string pattern, HttpMethod method);
+
+        //CommandEndpointRegistrationQueryItem<TQuery> AddQuery<TQuery>(string pattern, HttpMethod method)
+        //    where TQuery : IQuery;
 
         CommandEndpointRegistrationCommandItem<TCommand> AddCommand<TCommand>(string pattern, HttpMethod method)
             where TCommand : ICommand;

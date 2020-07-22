@@ -1,5 +1,8 @@
 namespace WeatherForecast.Application.Web
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
     using System.Text.Json;
     using global::Application;
     using MediatR;
@@ -89,8 +92,25 @@ namespace WeatherForecast.Application.Web
                     await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
                 });
 
-                endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts2");
-                endpoints.MapGet<WeatherForecastsQuery>("/api/weatherforecasts2/{DaysOffset:int}");
+                endpoints.MapGet<WeatherForecastsQuery>(
+                    "/api/weatherforecasts2",
+                    new CommandEndpointResponseQuery<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>
+                    {
+                        OnSuccessStatusCode = HttpStatusCode.OK,
+                        OnSuccess = (req, res, ctx) => ctx.Response.Location($"api/customers/{req.QueryId}/{res.Count()}") // typed req, res
+                    },
+                    new OpenApiDetails
+                    {
+                        GroupName = "test",
+                        Summary = "test"
+                    });
+                endpoints.MapGet<WeatherForecastsQuery>(
+                    "/api/weatherforecasts2/{DaysOffset:int}",
+                    new CommandEndpointResponse
+                    {
+                        OnSuccessStatusCode = HttpStatusCode.OK,
+                        OnSuccess = (req, res, ctx) => ctx.Response.Location("api/customers") // no req, res
+                    });
             });
         }
     }

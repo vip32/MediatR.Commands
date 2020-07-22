@@ -26,15 +26,38 @@
 
         public Func<object, HttpContext, Task> OnSuccess { get; set; }
 
-        public OpenApiDetails OpenApi { get; internal set; }
+        public OpenApiDetails OpenApi { get; set; }
+
+        public CommandEndpointResponse Response { get; set; }
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
-    public class CommandEndpointRegistrationQueryItem<TQuery> : CommandEndpointRegistrationItem
+    public class CommandEndpointResponse
+    {
+        public HttpStatusCode OnSuccessStatusCode { get; set; }
+
+        public Func<object, object, HttpContext, Task> OnSuccess { get; set; }
+    }
+
+    public class CommandEndpointResponseQuery<TQuery, TResponse> : CommandEndpointResponse
         where TQuery : IQuery
     {
-        public new Func<TQuery, HttpContext, Task> OnSuccess { get; set; }
+        public new Func<TQuery, TResponse, HttpContext, Task> OnSuccess { get; set; }
     }
+
+    public class CommandEndpointResponseCommand<TCommand, TResponse> : CommandEndpointResponse
+        where TCommand : ICommand
+    {
+        public new Func<TCommand, TResponse, HttpContext, Task> OnSuccess { get; set; }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    //public class CommandEndpointRegistrationQueryItem<TQuery> : CommandEndpointRegistrationItem
+    //    where TQuery : IQuery
+    //{
+    //    public new Func<TQuery, HttpContext, Task> OnSuccess { get; set; }
+    //}
 
     public class CommandEndpointRegistrationCommandItem<TCommand> : CommandEndpointRegistrationItem
         where TCommand : ICommand
