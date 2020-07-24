@@ -8,7 +8,6 @@ namespace WeatherForecast.Application.Web
     using global::Application;
     using MediatR;
     using MediatR.Commands;
-    using MediatR.Commands.OpenApi;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -17,6 +16,7 @@ namespace WeatherForecast.Application.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using NSwag.Generation.Processors;
 
     public class Startup
     {
@@ -41,8 +41,20 @@ namespace WeatherForecast.Application.Web
             services.AddCommandEndpoints();
 
             //services.AddSingleton<IApiDescriptionGroupCollectionProvider, CommandEndpointApiDescriptionGroupCollectionProvider>();
-            services.AddSingleton<IApiDescriptionGroupCollectionProvider, ApiDescriptionGroupCollectionProvider>();
-            services.AddOpenApiDocument(document => document.DocumentName = "v1");
+            //services.AddSingleton<IApiDescriptionGroupCollectionProvider, ApiDescriptionGroupCollectionProvider>();
+            services.AddTransient<IDocumentProcessor, CommandEndpointDocumentProcessor>();
+            services.AddSwaggerDocument((c, sp) => // TODO: replace with .AddOpenApiDocument, but currently has issues with example model generation in UI
+            {
+                foreach (var documentProcessor in sp.GetServices<IDocumentProcessor>())
+                {
+                    c.DocumentProcessors.Add(documentProcessor);
+                }
+
+                foreach (var operationProcessor in sp.GetServices<IOperationProcessor>())
+                {
+                    c.OperationProcessors.Add(operationProcessor);
+                }
+            });
 
             // optional authentication
             //services.AddAuthentication(options =>
