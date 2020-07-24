@@ -39,6 +39,7 @@
                         MethodInfo = typeof(EchoCommandHandler).GetMethod("Process"),
                     }
                 };
+                //apiDescription1.SupportedResponseTypes.Add(typeof(Unit));
 
                 var apiDescription2 = new ApiDescription
                 {
