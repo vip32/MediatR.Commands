@@ -40,21 +40,8 @@ namespace WeatherForecast.Application.Web
 
             services.AddCommandEndpoints();
 
-            //services.AddSingleton<IApiDescriptionGroupCollectionProvider, CommandEndpointApiDescriptionGroupCollectionProvider>();
-            //services.AddSingleton<IApiDescriptionGroupCollectionProvider, ApiDescriptionGroupCollectionProvider>();
-            services.AddTransient<IDocumentProcessor, CommandEndpointDocumentProcessor>();
-            services.AddSwaggerDocument((c, sp) => // TODO: replace with .AddOpenApiDocument, but currently has issues with example model generation in UI
-            {
-                foreach (var documentProcessor in sp.GetServices<IDocumentProcessor>())
-                {
-                    c.DocumentProcessors.Add(documentProcessor);
-                }
-
-                foreach (var operationProcessor in sp.GetServices<IOperationProcessor>())
-                {
-                    c.OperationProcessors.Add(operationProcessor);
-                }
-            });
+            services.AddSwaggerDocument((c, sp) =>
+                sp.GetServices<IDocumentProcessor>()?.ForEach(dp => c.DocumentProcessors.Add(dp)));
 
             // optional authentication
             //services.AddAuthentication(options =>
