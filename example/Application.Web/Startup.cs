@@ -137,7 +137,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapPost<DoItCommand>(
-                    pattern: "reg/doit",
+                    pattern: "/reg/doit", // leading slash is mandatory!
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("api/doit"),
                         onSuccessStatusCode: HttpStatusCode.Created),
@@ -148,7 +148,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapPost<DoItCommand>(
-                    pattern: "reg/doit2",
+                    pattern: "/reg/doit2", // leading slash is mandatory!
                     response: new CommandEndpointResponse<DoItCommand>(
                         onSuccess: (req, ctx) => ctx.Response.Location($"api/doit/{req.FirstName}_{req.LastName}"),
                         onSuccessStatusCode: HttpStatusCode.Created),
