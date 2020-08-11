@@ -106,7 +106,13 @@ namespace WeatherForecast.Application.Web
                 });
 
                 // command routes (registrations)
-                endpoints.MapGet<WeatherForecastsQuery>("/reg/weatherforecasts/minimal"); // --> send to WeatherForecastsQueryHandler
+                endpoints.MapGet<WeatherForecastsQuery>(
+                    "/reg/weatherforecasts/minimal",
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "test group",
+                        Summary = "test summary 0"
+                    }); // --> send to WeatherForecastsQueryHandler
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts",
@@ -115,27 +121,42 @@ namespace WeatherForecast.Application.Web
                         onSuccessStatusCode: HttpStatusCode.OK),
                     openApi: new OpenApiDetails
                     {
-                        GroupName = "test",
-                        Summary = "test"
+                        GroupName = "test group",
+                        Summary = "test summary 1"
                     });
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts/{DaysOffset:int}",
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("api/customers"),
-                        onSuccessStatusCode: HttpStatusCode.OK));
+                        onSuccessStatusCode: HttpStatusCode.OK),
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "test group",
+                        Summary = "test summary 2"
+                    });
 
                 endpoints.MapPost<DoItCommand>(
                     pattern: "reg/doit",
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("api/doit"),
-                        onSuccessStatusCode: HttpStatusCode.Created));
+                        onSuccessStatusCode: HttpStatusCode.Created),
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "test group",
+                        Summary = "test summary 3"
+                    });
 
                 endpoints.MapPost<DoItCommand>(
                     pattern: "reg/doit2",
                     response: new CommandEndpointResponse<DoItCommand>(
                         onSuccess: (req, ctx) => ctx.Response.Location($"api/doit/{req.FirstName}_{req.LastName}"),
-                        onSuccessStatusCode: HttpStatusCode.Created));
+                        onSuccessStatusCode: HttpStatusCode.Created),
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "test group",
+                        Summary = "test summary 4"
+                    });
             });
         }
     }

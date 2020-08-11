@@ -19,25 +19,25 @@
         public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TQuery : IQuery
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get, response, openApi);
+            endpoints.Map<TQuery>(pattern, HttpMethod.Get, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), openApi);
         }
 
         public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post, response, openApi);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Post, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), openApi);
         }
 
         public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put, response, openApi);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Put, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), openApi);
         }
 
         public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, response, openApi);
+            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), openApi);
         }
 
         private static void Map<TRequest>(

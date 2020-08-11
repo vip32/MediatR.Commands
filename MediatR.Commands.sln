@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{EF5CCB
 		Directory.Build.props = Directory.Build.props
 		GitVersion.yml = GitVersion.yml
 		README.md = README.md
+		REST.http = REST.http
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CB478E82-491C-4633-B1B6-732D86BEF5B6}"
@@ -25,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "example\Appl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.Web", "src\MediatR.Commands.Web\MediatR.Commands.Web.csproj", "{2C1C0B34-A9F9-4417-9510-7735A49D4C08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatR.Commands.UnitTests", "tests\MediatR.Commands.UnitTests\MediatR.Commands.UnitTests.csproj", "{73FEC25E-1939-44EE-A845-6C7D9C47D205}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.UnitTests", "tests\MediatR.Commands.UnitTests\MediatR.Commands.UnitTests.csproj", "{73FEC25E-1939-44EE-A845-6C7D9C47D205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
