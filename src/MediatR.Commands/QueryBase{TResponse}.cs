@@ -1,15 +1,22 @@
 ﻿namespace MediatR.Commands
 {
-    public abstract class QueryBase<TResponse> : QueryBase, IQuery<TResponse>
+    using System;
+
+    public abstract class QueryBase<TResponse> : IQuery<TResponse>
     {
         protected QueryBase()
-            : base()
         {
+            this.QueryId = Guid.NewGuid().ToString("N");
+            this.QueryTimestamp = DateTime.UtcNow;
         }
 
         protected QueryBase(string id)
-            : base(id)
         {
+            this.QueryId = id;
         }
+
+        public string QueryId { get; }
+
+        public DateTimeOffset QueryTimestamp { get; }
     }
 }

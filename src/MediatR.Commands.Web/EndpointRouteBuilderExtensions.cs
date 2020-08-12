@@ -145,6 +145,7 @@
             }
 
             registration.Response?.Invoke(requestModel, response, context);
+            context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
             context.Response.Headers.Add("content-type", registration.OpenApi?.Produces);
 
             if (response != null)

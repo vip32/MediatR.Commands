@@ -2,7 +2,7 @@
 {
     using System;
 
-    public abstract class QueryBase : IQuery
+    public abstract class QueryBase : IQuery<Unit>
     {
         protected QueryBase()
         {

@@ -6,7 +6,7 @@
     using MediatR.Commands;
     using Microsoft.Extensions.Logging;
 
-    public class UpdateUserCommandHandler : CommandHandlerBase<UpdateUserCommand, Unit>
+    public class UpdateUserCommandHandler : CommandHandlerBase<UpdateUserCommand>
     {
         public UpdateUserCommandHandler(ILoggerFactory loggerFactory)
             : base(loggerFactory)
