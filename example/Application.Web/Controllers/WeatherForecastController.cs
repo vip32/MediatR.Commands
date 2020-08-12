@@ -23,5 +23,13 @@
         {
             return await this.mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
         }
+
+        [HttpGet]
+        [Route("{daysOffset:int}")]
+        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get(int daysOffset)
+        {
+            var query = new WeatherForecastsQuery(daysOffset);
+            return await this.mediator.Send(query).ConfigureAwait(false);
+        }
     }
 }

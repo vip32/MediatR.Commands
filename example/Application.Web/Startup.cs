@@ -124,7 +124,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    pattern: "/reg/weatherforecasts/{DaysOffset:int}",
+                    pattern: "/reg/weatherforecasts/{daysOffset}",
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
                         onSuccessStatusCode: HttpStatusCode.OK),
