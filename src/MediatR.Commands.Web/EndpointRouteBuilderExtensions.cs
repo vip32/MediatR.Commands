@@ -62,7 +62,7 @@
             var configuration = endpoints.ServiceProvider.GetService<ICommandEndpointConfiguration>() // =singleton
                 ?? throw new InvalidOperationException("ICommandEndpointRegistrations has not been added to IServiceCollection. You can add it with services.AddCommandEndpoints(...);");
             var registration = configuration.AddRegistration<TRequest>(pattern, method);
-            registration.OpenApi = openApi ?? new OpenApiDetails();
+            registration.OpenApi = openApi ?? new OpenApiDetails() { GroupName = pattern.SliceFromLast("/").SliceTill("?").SliceTill("{").EmptyToNull() ?? "Undefined" };
             registration.Response = response;
 
             IEndpointConventionBuilder builder = null;
