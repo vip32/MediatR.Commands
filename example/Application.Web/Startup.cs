@@ -124,7 +124,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    pattern: "/reg/weatherforecasts/{daysOffset}",
+                    pattern: "/reg/weatherforecasts/{daysOffset}", // param needs to be camelized, due to camelized model property
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
                         onSuccessStatusCode: HttpStatusCode.OK),
