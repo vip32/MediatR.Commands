@@ -34,8 +34,8 @@ namespace WeatherForecast.Application.Web
             // commands registrations
             services.AddSingleton<IMemoryCache>(sp => new MemoryCache(new MemoryCacheOptions()));
             services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
 
             services.AddCommandEndpoints();
@@ -115,7 +115,7 @@ namespace WeatherForecast.Application.Web
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts",
-                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastsQueryResponse>>(
+                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
                         onSuccessStatusCode: HttpStatusCode.OK),
                     openApi: new OpenApiDetails
