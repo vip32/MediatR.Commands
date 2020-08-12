@@ -101,7 +101,7 @@
                 try
                 {
                     // warning: json properties are case sensitive
-                    requestModel = await JsonSerializer.DeserializeAsync(context.Request.Body, registration.RequestType, null, context.RequestAborted);
+                    requestModel = await JsonSerializer.DeserializeAsync(context.Request.Body, registration.RequestType, null, context.RequestAborted).ConfigureAwait(false);
                 }
                 catch (JsonException exception)
                 {
