@@ -76,7 +76,7 @@
                 {
                     operation.Responses.Add(((int)registration.Response.OnSuccessStatusCode).ToString(), new OpenApiResponse
                     {
-                        Description = description + registration.Response.IgnoreResponseBody,
+                        Description = description,
                         Schema = hasResponseModel ? schema : null,
                         //Examples = hasResponseModel ? Factory.Create(registration.ResponseType) : null // header?
                     });
