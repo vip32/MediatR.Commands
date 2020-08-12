@@ -6,14 +6,14 @@
     using MediatR.Commands;
     using Microsoft.Extensions.Logging;
 
-    public class DoItCommandHandler : CommandHandlerBase<CreateUserCommand>
+    public class UpdateUserCommandHandler : CommandHandlerBase<UpdateUserCommand, Unit>
     {
-        public DoItCommandHandler(ILoggerFactory loggerFactory)
+        public UpdateUserCommandHandler(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
         }
 
-        protected override Task<Unit> Process(CreateUserCommand request, CancellationToken cancellationToken)
+        protected override Task<Unit> Process(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             return Unit.Task;
         }

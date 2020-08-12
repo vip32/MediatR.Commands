@@ -68,19 +68,19 @@
             IEndpointConventionBuilder builder = null;
             if (method == HttpMethod.Get)
             {
-                builder = endpoints.MapGet(pattern, CommandEndpointRequestDelegate);
+                builder = endpoints.MapGet(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
             }
             else if (method == HttpMethod.Post)
             {
-                builder = endpoints.MapPost(pattern, CommandEndpointRequestDelegate);
+                builder = endpoints.MapPost(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
             }
             else if (method == HttpMethod.Put)
             {
-                builder = endpoints.MapPut(pattern, CommandEndpointRequestDelegate);
+                builder = endpoints.MapPut(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
             }
             else if (method == HttpMethod.Delete)
             {
-                builder = endpoints.MapDelete(pattern, CommandEndpointRequestDelegate);
+                builder = endpoints.MapDelete(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
             }
 
             builder?.WithDisplayName(registration.Name);

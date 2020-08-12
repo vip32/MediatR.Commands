@@ -34,8 +34,8 @@ namespace WeatherForecast.Application.Web
             // commands registrations
             services.AddSingleton<IMemoryCache>(sp => new MemoryCache(new MemoryCacheOptions()));
             services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
 
             services.AddCommandEndpoints();
@@ -115,7 +115,7 @@ namespace WeatherForecast.Application.Web
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts",
-                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
+                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastsQueryResponse>>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
                         onSuccessStatusCode: HttpStatusCode.OK),
                     openApi: new OpenApiDetails
@@ -133,21 +133,30 @@ namespace WeatherForecast.Application.Web
                         GroupName = "WeatherForecast"
                     });
 
+                //endpoints.MapPost<CreateUserCommand>(
+                //    pattern: "/users",
+                //    response: new CommandEndpointResponse(
+                //        onSuccess: (req, res, ctx) => ctx.Response.Location("/users"),
+                //        onSuccessStatusCode: HttpStatusCode.Created),
+                //    openApi: new OpenApiDetails
+                //    {
+                //        GroupName = "User"
+                //    });
+
                 endpoints.MapPost<CreateUserCommand>(
                     pattern: "/users",
-                    response: new CommandEndpointResponse(
-                        onSuccess: (req, res, ctx) => ctx.Response.Location("/users"),
+                    response: new CommandEndpointResponse<CreateUserCommand, CreateUserCommandResponse>(
+                        onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
                         onSuccessStatusCode: HttpStatusCode.Created),
                     openApi: new OpenApiDetails
                     {
                         GroupName = "User"
                     });
 
-                endpoints.MapPost<CreateUserCommand>(
-                    pattern: "/users/2",
-                    response: new CommandEndpointResponse<CreateUserCommand>(
-                        onSuccess: (req, ctx) => ctx.Response.Location($"/users/{req.FirstName}_{req.LastName}"),
-                        onSuccessStatusCode: HttpStatusCode.Created),
+                endpoints.MapPut<UpdateUserCommand>(
+                    pattern: "/users/{userId}",
+                    response: new CommandEndpointResponse<UpdateUserCommand>(
+                        onSuccessStatusCode: HttpStatusCode.OK),
                     openApi: new OpenApiDetails
                     {
                         GroupName = "User"

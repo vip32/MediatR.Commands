@@ -1,9 +1,12 @@
 ﻿namespace Application
 {
+    using MediatR;
     using MediatR.Commands;
 
-    public class CreateUserCommand : CommandBase<CreateUserCommandResponse>
+    public class UpdateUserCommand : CommandBase<Unit>
     {
+        public string UserId { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

@@ -19,9 +19,9 @@
 
         private Func<object, object, HttpContext, Task> OnSuccess { get; }
 
-        public virtual void Invoke(object req, object resp, HttpContext ctx)
+        public virtual void Invoke(object req, object res, HttpContext ctx)
         {
-            this.OnSuccess?.Invoke(req, resp, ctx);
+            this.OnSuccess?.Invoke(req, res, ctx);
         }
     }
 
@@ -59,9 +59,9 @@
 
         private Func<TRequest, TResponse, HttpContext, Task> OnSuccess { get; }
 
-        public override void Invoke(object req, object resp, HttpContext ctx)
+        public override void Invoke(object req, object res, HttpContext ctx)
         {
-            this.OnSuccess?.Invoke(req as TRequest, resp as TResponse, ctx);
+            this.OnSuccess?.Invoke(req as TRequest, res as TResponse, ctx);
         }
     }
 #pragma warning restore SA1402 // File may only contain a single type

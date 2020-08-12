@@ -1,6 +1,6 @@
 ﻿namespace MediatR.Commands
 {
-    public class EchoCommand : CommandBase
+    public class EchoCommand : CommandBase<Unit>
     {
     }
 }

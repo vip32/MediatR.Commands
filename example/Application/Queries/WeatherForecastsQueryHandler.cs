@@ -8,7 +8,7 @@
     using MediatR.Commands;
     using Microsoft.Extensions.Logging;
 
-    public class WeatherForecastsQueryHandler : QueryHandlerBase<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>
+    public class WeatherForecastsQueryHandler : QueryHandlerBase<WeatherForecastsQuery, IEnumerable<WeatherForecastsQueryResponse>>
     {
         private static readonly string[] Summaries = new[]
         {
@@ -20,10 +20,10 @@
         {
         }
 
-        protected override Task<IEnumerable<WeatherForecastQueryResponse>> Process(WeatherForecastsQuery request, CancellationToken cancellationToken)
+        protected override Task<IEnumerable<WeatherForecastsQueryResponse>> Process(WeatherForecastsQuery request, CancellationToken cancellationToken)
         {
             var rng = new Random();
-            return Task.Run(() => Enumerable.Range(request.DaysOffset, 5).Select(index => new WeatherForecastQueryResponse
+            return Task.Run(() => Enumerable.Range(request.DaysOffset, 5).Select(index => new WeatherForecastsQueryResponse
             {
                 Index = index,
                 Date = DateTime.Now.AddDays(index),

@@ -2,7 +2,7 @@ namespace Application
 {
     using System;
 
-    public class WeatherForecastQueryResponse
+    public class WeatherForecastsQueryResponse
     {
         public int Index { get; set; }
 

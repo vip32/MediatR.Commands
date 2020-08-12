@@ -19,14 +19,14 @@
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get()
+        public async Task<IEnumerable<WeatherForecastsQueryResponse>> Get()
         {
             return await this.mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
         }
 
         [HttpGet]
         [Route("{daysOffset:int}")]
-        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get(int daysOffset)
+        public async Task<IEnumerable<WeatherForecastsQueryResponse>> Get(int daysOffset)
         {
             var query = new WeatherForecastsQuery(daysOffset);
             return await this.mediator.Send(query).ConfigureAwait(false);
