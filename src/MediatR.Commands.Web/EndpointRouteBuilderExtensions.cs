@@ -148,7 +148,7 @@
             context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
             context.Response.Headers.Add("content-type", registration.OpenApi?.Produces);
 
-            if (response != null)
+            if (response != null && registration.Response?.IgnoreResponseBody == false)
             {
                 await JsonSerializer.SerializeAsync(
                     context.Response.Body,
@@ -156,9 +156,9 @@
                     response?.GetType() ?? registration.ResponseType,
                     null,
                     context.RequestAborted).ConfigureAwait(false);
+                await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
             }
 
-            await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
             timer.Stop();
             logger.LogDebug("request: finished (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
         }

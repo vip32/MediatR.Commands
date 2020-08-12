@@ -147,8 +147,8 @@ namespace WeatherForecast.Application.Web
                     pattern: "/users",
                     response: new CommandEndpointResponse<CreateUserCommand, CreateUserCommandResponse>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
-                        onSuccessStatusCode: HttpStatusCode.Created),
-                        // ignoreResponseBody
+                        onSuccessStatusCode: HttpStatusCode.Created,
+                        ignoreResponseBody: true),
                     openApi: new OpenApiDetails
                     {
                         GroupName = "User"

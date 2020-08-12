@@ -9,11 +9,15 @@
     {
         public CommandEndpointResponse(
             Func<object, object, HttpContext, Task> onSuccess = null,
-            HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK)
+            HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK,
+            bool ignoreResponseBody = false)
         {
             this.OnSuccess = onSuccess;
             this.OnSuccessStatusCode = onSuccessStatusCode;
+            this.IgnoreResponseBody = ignoreResponseBody;
         }
+
+        public bool IgnoreResponseBody { get; }
 
         public HttpStatusCode OnSuccessStatusCode { get; }
 
@@ -51,8 +55,9 @@
     {
         public CommandEndpointResponse(
             Func<TRequest, TResponse, HttpContext, Task> onSuccess = null,
-            HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK)
-            : base(null, onSuccessStatusCode)
+            HttpStatusCode onSuccessStatusCode = HttpStatusCode.OK,
+            bool ignoreResponseBody = false)
+            : base(null, onSuccessStatusCode, ignoreResponseBody)
         {
             this.OnSuccess = onSuccess;
         }

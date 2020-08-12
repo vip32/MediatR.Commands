@@ -55,7 +55,7 @@
 
                 item.Add(method, operation);
 
-                var hasResponseModel = registration.ResponseType != typeof(Unit) && registration.ResponseType?.Name.SafeEquals("object") == false;
+                var hasResponseModel = registration.Response?.IgnoreResponseBody == false && registration.ResponseType != typeof(Unit) && registration.ResponseType?.Name.SafeEquals("object") == false;
                 var description = registration.OpenApi.Description ?? (hasResponseModel ? registration.ResponseType : null)?.PrettyName();
                 var schema = context.SchemaGenerator.Generate(registration.ResponseType, context.SchemaResolver);
                 var schemaKey = registration.ResponseType.PrettyName();
@@ -76,7 +76,7 @@
                 {
                     operation.Responses.Add(((int)registration.Response.OnSuccessStatusCode).ToString(), new OpenApiResponse
                     {
-                        Description = description,
+                        Description = description + registration.Response.IgnoreResponseBody,
                         Schema = hasResponseModel ? schema : null,
                         //Examples = hasResponseModel ? Factory.Create(registration.ResponseType) : null // header?
                     });
