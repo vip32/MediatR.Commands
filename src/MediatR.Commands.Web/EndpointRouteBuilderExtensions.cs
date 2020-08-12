@@ -66,7 +66,7 @@
             registration.Response = response;
 
             IEndpointConventionBuilder builder = null;
-            if(method == HttpMethod.Get)
+            if (method == HttpMethod.Get)
             {
                 builder = endpoints.MapGet(pattern, CommandEndpointRequestDelegate);
             }

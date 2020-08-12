@@ -13,7 +13,8 @@
 
     public class CommandEndpointDocumentProcessor : IDocumentProcessor
     {
-        private static readonly IDictionary<string, JsonSchema> Schemas = new Dictionary<string, JsonSchema>();
+        private static readonly IDictionary<string, JsonSchema> RequestSchemas = new Dictionary<string, JsonSchema>();
+        private static readonly IDictionary<string, JsonSchema> ResponseSchemas = new Dictionary<string, JsonSchema>();
         private readonly ICommandEndpointConfiguration configuration;
 
         public CommandEndpointDocumentProcessor(ICommandEndpointConfiguration configuration)
@@ -56,17 +57,18 @@
 
                 var hasResponseModel = registration.ResponseType?.Name.SafeEquals("object") == false;
                 var description = registration.OpenApi.Description ?? (hasResponseModel ? registration.ResponseType : null)?.PrettyName();
-                var jsonSchema = context.SchemaGenerator.Generate(registration.ResponseType, context.SchemaResolver);
+                var schema = context.SchemaGenerator.Generate(registration.ResponseType, context.SchemaResolver);
+                var schemaKey = registration.ResponseType.PrettyName();
                 // reuse some previously generated schemas, so schema $refs are avoided
                 if (!description.IsNullOrEmpty())
                 {
-                    if (Schemas.ContainsKey(description))
+                    if (ResponseSchemas.ContainsKey(schemaKey))
                     {
-                        jsonSchema = Schemas[description];
+                        schema = ResponseSchemas[schemaKey];
                     }
                     else
                     {
-                        Schemas.Add(description, jsonSchema);
+                        ResponseSchemas.Add(schemaKey, schema);
                     }
                 }
 
@@ -75,7 +77,7 @@
                     operation.Responses.Add(((int)registration.Response.OnSuccessStatusCode).ToString(), new OpenApiResponse
                     {
                         Description = description,
-                        Schema = hasResponseModel ? jsonSchema : null,
+                        Schema = hasResponseModel ? schema : null,
                         //Examples = hasResponseModel ? Factory.Create(registration.ResponseType) : null // header?
                     });
                 }
@@ -84,7 +86,7 @@
                     operation.Responses.Add(200.ToString(), new OpenApiResponse
                     {
                         Description = description,
-                        Schema = hasResponseModel ? jsonSchema : null,
+                        Schema = hasResponseModel ? schema : null,
                         //Examples = hasResponseModel ? Factory.Create(registration.ResponseType) : null // header?
                     });
                 }
@@ -183,14 +185,24 @@
                 Kind = OpenApiParameterKind.Body,
                 Name = (registration.RequestType ?? typeof(object)).PrettyName(), //"model",
                 Type = JsonObjectType.Object,
-                Schema = CreateSchema(registration, context),
+                Schema = EnsureSchema(registration, context),
                 //Example = registration.CommandType != null ? Factory.Create(registration.CommandType) : null //new Commands.Domain.EchoCommand() { Message = "test"},
             });
         }
 
-        private static JsonSchema CreateSchema(CommandEndpointRegistration registration, DocumentProcessorContext context)
+        private static JsonSchema EnsureSchema(CommandEndpointRegistration registration, DocumentProcessorContext context)
         {
-            return context.SchemaGenerator.Generate(registration.RequestType, context.SchemaResolver);
+            var schemaKey = registration.RequestType.PrettyName();
+            if (RequestSchemas.ContainsKey(schemaKey))
+            {
+                return RequestSchemas[schemaKey];
+            }
+            else
+            {
+                var schema = context.SchemaGenerator.Generate(registration.RequestType, context.SchemaResolver);
+                RequestSchemas.Add(schemaKey, schema);
+                return schema;
+            }
 
             //var schema = result.AllOf.FirstOrDefault();
             //if (schema != null)
