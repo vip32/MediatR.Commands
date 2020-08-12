@@ -1,15 +1,22 @@
 ﻿namespace MediatR.Commands
 {
-    public abstract class CommandBase<TResponse> : CommandBase, ICommand<TResponse>
+    using System;
+
+    public abstract class CommandBase<TResponse> : ICommand<TResponse>
     {
         protected CommandBase()
-            : base()
         {
+            this.CommandId = Guid.NewGuid().ToString("N");
+            this.CommandTimestamp = DateTime.UtcNow;
         }
 
         protected CommandBase(string id)
-            : base(id)
         {
+            this.CommandId = id;
         }
+
+        public string CommandId { get; }
+
+        public DateTimeOffset CommandTimestamp { get; }
     }
 }

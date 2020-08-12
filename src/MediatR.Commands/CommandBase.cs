@@ -2,7 +2,7 @@
 {
     using System;
 
-    public abstract class CommandBase : ICommand
+    public abstract class CommandBase : ICommand<Unit>
     {
         protected CommandBase()
         {

@@ -3,7 +3,7 @@
     using MediatR;
     using MediatR.Commands;
 
-    public class UpdateUserCommand : CommandBase<Unit>
+    public class UpdateUserCommand : CommandBase
     {
         public string UserId { get; set; }
 
