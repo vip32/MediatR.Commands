@@ -52,6 +52,11 @@
                 throw new ArgumentNullException($"{typeof(TRequest)} cannot be registered with a null or empty route pattern.");
             }
 
+            if (!pattern.StartsWith('/'))
+            {
+                pattern = $"/{pattern}"; // ensure leading pattern slash
+            }
+
             var mediator = endpoints.ServiceProvider.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator has not been added to IServiceCollection. You can add it with services.AddMediatR(...);");
             var configuration = endpoints.ServiceProvider.GetService<ICommandEndpointConfiguration>() // =singleton
