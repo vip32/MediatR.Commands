@@ -55,7 +55,7 @@
 
                 item.Add(method, operation);
 
-                var hasResponseModel = registration.ResponseType?.Name.SafeEquals("object") == false;
+                var hasResponseModel = registration.ResponseType != typeof(Unit) && registration.ResponseType?.Name.SafeEquals("object") == false;
                 var description = registration.OpenApi.Description ?? (hasResponseModel ? registration.ResponseType : null)?.PrettyName();
                 var schema = context.SchemaGenerator.Generate(registration.ResponseType, context.SchemaResolver);
                 var schemaKey = registration.ResponseType.PrettyName();
