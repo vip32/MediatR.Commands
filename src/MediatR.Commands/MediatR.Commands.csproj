@@ -10,7 +10,7 @@
     <Company></Company>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/vip32/MediatR.Commands</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
