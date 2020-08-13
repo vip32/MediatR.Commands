@@ -2,7 +2,7 @@
 {
     using MediatR.Commands;
 
-    public class CreateUserCommand : CommandBase<CreateUserCommandResponse>
+    public class UserCreateCommand : CommandBase<UserCreateCommandResponse>
     {
         public string FirstName { get; set; }
 

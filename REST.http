@@ -1,3 +1,5 @@
+# https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
 @baseUrl = https://localhost:5001
 
 ###################################################################################
@@ -17,13 +19,17 @@ Content-Type: application/json
 
 ###################################################################################
 #### command, no response (ignored)
+# @name user
 POST {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 
 {
     "FirstName" : "John",
-    "LastName" : "Doe"
+    "LastName" : "Doe{{$randomInt 10 99}}"
 }
+
+### capture location
+@userRoute = {{user.response.headers.Location}}
 
 ###################################################################################
 #### command, bad request due to invalid json
@@ -37,7 +43,7 @@ Content-Type: application/json
 
 ###################################################################################
 #### command, no response
-PUT {{baseUrl}}/users/3b6528f2-0f1f-49b0-9ae6-8629633ecaea HTTP/1.1
+PUT {{baseUrl}}{{userRoute}} HTTP/1.1
 Content-Type: application/json
 
 {
@@ -47,5 +53,15 @@ Content-Type: application/json
 
 ###################################################################################
 #### command, response
-GET {{baseUrl}}/users/3b6528f2-0f1f-49b0-9ae6-8629633ecaea HTTP/1.1
+GET {{baseUrl}}/users HTTP/1.1
+Content-Type: application/json
+
+###################################################################################
+#### command, response
+GET {{baseUrl}}{{userRoute}} HTTP/1.1
+Content-Type: application/json
+
+###################################################################################
+#### command, response
+GET {{baseUrl}}/users/unk HTTP/1.1
 Content-Type: application/json

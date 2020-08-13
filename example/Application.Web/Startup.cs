@@ -39,6 +39,7 @@ namespace WeatherForecast.Application.Web
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateCommandBehavior<,>));
 
             services.AddCommandEndpoints();
+            services.AddMemoryCache();
 
             services.AddSwaggerDocument((c, sp) =>
                 sp.GetServices<IDocumentProcessor>()?.ForEach(dp => c.DocumentProcessors.Add(dp)));
@@ -143,16 +144,23 @@ namespace WeatherForecast.Application.Web
                 //        GroupName = "User"
                 //    });
 
-                endpoints.MapGet<UserByIdQuery>(
+                endpoints.MapGet<UserFindAllQuery>(
+                    "/users",
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "User"
+                    });
+
+                endpoints.MapGet<UserFindByIdQuery>(
                     "/users/{userId}",
                     openApi: new OpenApiDetails
                     {
                         GroupName = "User"
                     });
 
-                endpoints.MapPost<CreateUserCommand>(
+                endpoints.MapPost<UserCreateCommand>(
                     "/users",
-                    response: new CommandEndpointResponse<CreateUserCommand, CreateUserCommandResponse>(
+                    response: new CommandEndpointResponse<UserCreateCommand, UserCreateCommandResponse>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
                         onSuccessStatusCode: HttpStatusCode.Created,
                         ignoreResponseBody: true),
@@ -161,7 +169,7 @@ namespace WeatherForecast.Application.Web
                         GroupName = "User"
                     });
 
-                endpoints.MapPut<UpdateUserCommand>(
+                endpoints.MapPut<UserUpdateCommand>(
                     "/users/{userId}",
                     openApi: new OpenApiDetails
                     {

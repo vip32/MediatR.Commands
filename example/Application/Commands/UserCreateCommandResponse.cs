@@ -1,8 +1,6 @@
 ﻿namespace Application
 {
-    using MediatR.Commands;
-
-    public class UserByIdQuery : QueryBase<User>
+    public class UserCreateCommandResponse
     {
         public string UserId { get; set; }
     }
