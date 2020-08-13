@@ -17,12 +17,7 @@ Content-Type: application/json
 
 ###################################################################################
 #### command, no response
-POST {{baseUrl}}/reg/doit HTTP/1.1
-Content-Type: application/json
-
-###################################################################################
-#### command, no response
-POST {{baseUrl}}/reg/doit2 HTTP/1.1
+POST {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -32,10 +27,25 @@ Content-Type: application/json
 
 ###################################################################################
 #### command, bad request due to invalid json
-POST {{baseUrl}}/reg/doit2 HTTP/1.1
+POST {{baseUrl}}/users HTTP/1.1
 Content-Type: application/json
 
 {
     "FirstName" : "John", // this comment causes deserialization error > bad request
     "LastName" : "Doe"
 }
+
+###################################################################################
+#### command, no response
+PUT {{baseUrl}}/users/123 HTTP/1.1
+Content-Type: application/json
+
+{
+    "FirstName" : "Johny",
+    "LastName" : "Doe"
+}
+
+###################################################################################
+#### command, response
+GET {{baseUrl}}/users/123 HTTP/1.1
+Content-Type: application/json
