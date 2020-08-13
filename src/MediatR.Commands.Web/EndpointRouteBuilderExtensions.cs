@@ -82,6 +82,10 @@
             {
                 builder = endpoints.MapDelete(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
             }
+            //else if (method == HttpMethod.Patch)
+            //{
+            //    builder = endpoints.MapPatch(pattern.SliceTill("?"), CommandEndpointRequestDelegate);
+            //}
 
             builder?.WithDisplayName(registration.Name);
             builder?.WithMetadata(registration);
