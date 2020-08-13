@@ -126,8 +126,9 @@
                 {
                     AddQueryOperation(operation, registration);
                 }
-                else if (method.SafeEquals("post") || method.SafeEquals("put") || method.SafeEquals(string.Empty))
+                else if (method.SafeEquals("post") || method.SafeEquals("put") || method.SafeEquals("patch") || method.SafeEquals(string.Empty))
                 {
+                    AddQueryOperation(operation, registration, true);
                     AddBodyOperation(operation, registration, context);
                 }
                 else
@@ -137,7 +138,7 @@
             }
         }
 
-        private static void AddQueryOperation(OpenApiOperation operation, CommandEndpointRegistration registration)
+        private static void AddQueryOperation(OpenApiOperation operation, CommandEndpointRegistration registration, bool patternParametersOnly = false)
         {
             foreach (var property in registration.RequestType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
@@ -165,15 +166,33 @@
                     type = JsonObjectType.Object; // TODO: does not work for child objects
                 }
 
-                operation.Parameters.Add(new OpenApiParameter
+                if (!patternParametersOnly)
                 {
-                    //Description = "request model",
-                    Kind = registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase)
-                        ? OpenApiParameterKind.Path
-                        : OpenApiParameterKind.Query,
-                    Name = property.Name.Camelize(),
-                    Type = type,
-                });
+                    // always add parameter
+                    operation.Parameters.Add(new OpenApiParameter
+                    {
+                        //Description = "request model",
+                        Kind = registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase)
+                            ? OpenApiParameterKind.Path
+                            : OpenApiParameterKind.Query, // query routes are not really supported!
+                        Name = property.Name.Camelize(),
+                        Type = type,
+                    });
+                }
+                else
+                {
+                    // only add parameter if it appears in the route pattern
+                    if(registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        operation.Parameters.Add(new OpenApiParameter
+                        {
+                            //Description = "request model",
+                            Kind = OpenApiParameterKind.Path,
+                            Name = property.Name.Camelize(),
+                            Type = type,
+                        });
+                    }
+                }
             }
         }
 

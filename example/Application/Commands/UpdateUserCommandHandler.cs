@@ -15,6 +15,7 @@
 
         protected override Task<Unit> Process(UpdateUserCommand request, CancellationToken cancellationToken)
         {
+            // request.UserId should be the value from the route > /users/123
             return Unit.Task;
         }
     }
