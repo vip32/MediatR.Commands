@@ -166,7 +166,8 @@ namespace WeatherForecast.Application.Web
                         ignoreResponseBody: true),
                     openApi: new OpenApiDetails
                     {
-                        GroupName = "User"
+                        GroupName = "User",
+                        RequestBodyDescription = "The user details"
                     });
 
                 endpoints.MapPut<UserUpdateCommand>(

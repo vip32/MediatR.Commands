@@ -4,6 +4,8 @@
     {
         public string Description { get; set; }
 
+        public string RequestBodyDescription { get; set; }
+
         public string ResponseDescription { get; set; }
 
         public string Summary { get; set; }

@@ -56,25 +56,23 @@
                 item.Add(method, operation);
 
                 var hasResponseModel = registration.Response?.IgnoreResponseBody == false && registration.ResponseType != typeof(Unit) && registration.ResponseType?.Name.SafeEquals("object") == false;
-                var description = registration.OpenApi.Description ?? (hasResponseModel ? registration.ResponseType : null)?.PrettyName();
+                var description = hasResponseModel ? registration.ResponseType.PrettyName() : string.Empty;
                 var schema = context.SchemaGenerator.Generate(registration.ResponseType, context.SchemaResolver);
                 var schemaKey = registration.ResponseType.PrettyName();
+
                 // reuse some previously generated schemas, so schema $refs are avoided
-                if (!description.IsNullOrEmpty())
+                if (ResponseSchemas.ContainsKey(schemaKey))
                 {
-                    if (ResponseSchemas.ContainsKey(schemaKey))
-                    {
-                        schema = ResponseSchemas[schemaKey];
-                    }
-                    else
-                    {
-                        ResponseSchemas.Add(schemaKey, schema);
-                    }
+                    schema = ResponseSchemas[schemaKey];
+                }
+                else
+                {
+                    ResponseSchemas.Add(schemaKey, schema);
                 }
 
-                if(registration.Response != null)
+                if (registration.Response == null)
                 {
-                    operation.Responses.Add(((int)registration.Response.OnSuccessStatusCode).ToString(), new OpenApiResponse
+                    operation.Responses.Add(200.ToString(), new OpenApiResponse
                     {
                         Description = description,
                         Schema = hasResponseModel ? schema : null,
@@ -83,7 +81,7 @@
                 }
                 else
                 {
-                    operation.Responses.Add(200.ToString(), new OpenApiResponse
+                    operation.Responses.Add(((int)registration.Response.OnSuccessStatusCode).ToString(), new OpenApiResponse
                     {
                         Description = description,
                         Schema = hasResponseModel ? schema : null,
@@ -171,7 +169,7 @@
                     // always add parameter
                     operation.Parameters.Add(new OpenApiParameter
                     {
-                        //Description = "request model",
+                        //Description = "request model", // TODO: define a description per param (dictionary) and use it here
                         Kind = registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase)
                             ? OpenApiParameterKind.Path
                             : OpenApiParameterKind.Query, // query routes are not really supported!
@@ -182,11 +180,11 @@
                 else
                 {
                     // only add parameter if it appears in the route pattern
-                    if(registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase))
+                    if (registration.Pattern.Contains($"{{{property.Name}", StringComparison.OrdinalIgnoreCase))
                     {
                         operation.Parameters.Add(new OpenApiParameter
                         {
-                            //Description = "request model",
+                            //Description = "request model", // TODO: define a description per param (dictionary) and use it here
                             Kind = OpenApiParameterKind.Path,
                             Name = property.Name.Camelize(),
                             Type = type,
@@ -200,9 +198,9 @@
         {
             operation.Parameters.Add(new OpenApiParameter
             {
-                //Description = "request model",
+                Description = registration.OpenApi?.RequestBodyDescription, //registration.RequestType.PrettyName(), //"request model",
                 Kind = OpenApiParameterKind.Body,
-                Name = (registration.RequestType ?? typeof(object)).PrettyName(), //"model",
+                Name = registration.RequestType.PrettyName(), //"model",
                 Type = JsonObjectType.Object,
                 Schema = EnsureSchema(registration, context),
                 //Example = registration.CommandType != null ? Factory.Create(registration.CommandType) : null //new Commands.Domain.EchoCommand() { Message = "test"},
