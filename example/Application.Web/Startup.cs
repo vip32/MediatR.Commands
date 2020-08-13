@@ -143,8 +143,15 @@ namespace WeatherForecast.Application.Web
                 //        GroupName = "User"
                 //    });
 
+                endpoints.MapGet<UserByIdQuery>(
+                    "/users/{userId}",
+                    openApi: new OpenApiDetails
+                    {
+                        GroupName = "User"
+                    });
+
                 endpoints.MapPost<CreateUserCommand>(
-                    pattern: "/users",
+                    "/users",
                     response: new CommandEndpointResponse<CreateUserCommand, CreateUserCommandResponse>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
                         onSuccessStatusCode: HttpStatusCode.Created,
@@ -155,9 +162,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapPut<UpdateUserCommand>(
-                    pattern: "/users/{userId}",
-                    response: new CommandEndpointResponse<UpdateUserCommand>(
-                        onSuccessStatusCode: HttpStatusCode.OK),
+                    "/users/{userId}",
                     openApi: new OpenApiDetails
                     {
                         GroupName = "User"
