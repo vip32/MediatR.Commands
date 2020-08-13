@@ -26,9 +26,12 @@
                 {
                     user.FirstName = request.FirstName;
                     user.LastName = request.LastName;
+
+                    this.Logger.LogInformation($"USER UPDATED: {user.Id}");
                 }
 
-                this.Logger.LogInformation($"USER UPDATED: {user.Id}");
+                // TODO: bad request if user not found
+
                 return Unit.Task;
             });
         }

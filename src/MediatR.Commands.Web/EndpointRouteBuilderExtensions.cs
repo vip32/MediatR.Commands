@@ -134,14 +134,22 @@
             if (requestModel is ICommand command)
             {
                 id = command.CommandId;
+                logger.LogDebug("request: starting command (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registration.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
+                context.Response.Headers.Add("X-CommandId", id);
             }
             else if (requestModel is IQuery query)
             {
                 id = query.QueryId;
+                logger.LogDebug("request: starting query (type={queryRequestType}, id={queryId}), method={queryRequestMethod}) {commandRequestUri}", registration.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
+                context.Response.Headers.Add("X-QueryId", id);
+            }
+            else
+            {
+                // TODO: throw if unknown type
             }
 
-            logger.LogDebug("request: starting (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registration.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
             var mediator = context.RequestServices.GetService<IMediator>();
+            // TODO: try catch the following and return 500 with ProblemDetails when exception occurs
             var response = await mediator.Send(requestModel, context.RequestAborted).ConfigureAwait(false);
 
             if(response is Unit) // Unit is the empty mediatr response
@@ -151,7 +159,7 @@
 
             registration.Response?.Invoke(requestModel, response, context);
             context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
-            context.Response.Headers.Add("content-type", registration.OpenApi?.Produces);
+            context.Response.Headers.Add("Content-Type", registration.OpenApi?.Produces);
 
             if (response != null && registration.Response?.IgnoreResponseBody == false)
             {
@@ -165,7 +173,14 @@
             }
 
             timer.Stop();
-            logger.LogDebug("request: finished (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+            if (requestModel is ICommand)
+            {
+                logger.LogDebug("request: finished command (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+            }
+            else if (requestModel is IQuery)
+            {
+                logger.LogDebug("request: finished query (type={queryRequestType}, id={queryId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+            }
         }
 
         private static IDictionary<string, object> GetParameterValues(string pattern, string requestPath, string query = null)

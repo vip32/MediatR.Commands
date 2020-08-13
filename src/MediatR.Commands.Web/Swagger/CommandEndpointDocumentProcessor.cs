@@ -112,7 +112,14 @@
         {
             foreach (var response in operation.Responses)
             {
-                response.Value.Headers.Add("X-CommandId", new JsonSchema { Type = JsonObjectType.String });
+                if (registration.RequestType.GetInterfaces().Contains(typeof(ICommand)))
+                {
+                    response.Value.Headers.Add("X-CommandId", new JsonSchema { Type = JsonObjectType.String });
+                }
+                else if (registration.RequestType.GetInterfaces().Contains(typeof(IQuery)))
+                {
+                    response.Value.Headers.Add("X-QueryId", new JsonSchema { Type = JsonObjectType.String });
+                }
             }
         }
 
