@@ -227,23 +227,6 @@
                 RequestSchemas.Add(schemaKey, schema);
                 return schema;
             }
-
-            //var schema = result.AllOf.FirstOrDefault();
-            //if (schema != null)
-            //{
-            //    // workaround: remove invalid first $ref in allof https://github.com/RicoSuter/NSwag/issues/2119
-            //    result.AllOf.Remove(schema);
-            //}
-
-            // remove some more $refs
-            //foreach(var definition in result.Definitions.Safe())
-            //{
-            //    var s = definition.Value.AllOf.FirstOrDefault();
-            //    if(s != null)
-            //    {
-            //        definition.Value.AllOf.Remove(s);
-            //    }
-            //}
         }
 
         private static string GetStringSha256Hash(string text)
