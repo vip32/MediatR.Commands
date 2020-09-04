@@ -109,30 +109,21 @@ namespace WeatherForecast.Application.Web
                 // command routes (registrations)
                 endpoints.MapGet<WeatherForecastsQuery>(
                     "/reg/weatherforecasts/minimal",
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "WeatherForecast"
-                    });
+                    group: "WeatherForecast");
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts",
+                    group: "WeatherForecast",
                     response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
-                        onSuccessStatusCode: HttpStatusCode.OK),
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "WeatherForecast"
-                    });
+                        onSuccessStatusCode: HttpStatusCode.OK));
 
                 endpoints.MapGet<WeatherForecastsQuery>(
                     pattern: "/reg/weatherforecasts/{daysOffset}", // swagger: param needs to be camelized, due to matching camelized model property
+                    group: "WeatherForecast",
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
-                        onSuccessStatusCode: HttpStatusCode.OK),
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "WeatherForecast"
-                    });
+                        onSuccessStatusCode: HttpStatusCode.OK));
 
                 //endpoints.MapPost<CreateUserCommand>(
                 //    pattern: "/users",
@@ -146,17 +137,11 @@ namespace WeatherForecast.Application.Web
 
                 endpoints.MapGet<UserFindAllQuery>(
                     "/users",
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "User"
-                    });
+                    group: "User");
 
                 endpoints.MapGet<UserFindByIdQuery>(
                     "/users/{userId}",
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "User"
-                    });
+                    group: "User");
 
                 endpoints.MapPost<UserCreateCommand>(
                     "/users",
@@ -164,18 +149,14 @@ namespace WeatherForecast.Application.Web
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
                         onSuccessStatusCode: HttpStatusCode.Created,
                         ignoreResponseBody: true),
-                    openApi: new OpenApiDetails
+                    openApi: new OpenApiDetails("User")
                     {
-                        GroupName = "User",
                         RequestBodyDescription = "The user details"
                     });
 
                 endpoints.MapPut<UserUpdateCommand>(
                     "/users/{userId}",
-                    openApi: new OpenApiDetails
-                    {
-                        GroupName = "User"
-                    });
+                    group: "User");
             });
         }
     }

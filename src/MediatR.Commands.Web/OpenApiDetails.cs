@@ -2,6 +2,21 @@
 {
     public class OpenApiDetails
     {
+        public OpenApiDetails()
+        {
+        }
+
+        public OpenApiDetails(string groupName)
+        {
+            this.GroupName = groupName;
+        }
+
+        public OpenApiDetails(string groupName, string description)
+        {
+            this.GroupName = groupName;
+            this.Description = description;
+        }
+
         public string Description { get; set; }
 
         public string RequestBodyDescription { get; set; }
