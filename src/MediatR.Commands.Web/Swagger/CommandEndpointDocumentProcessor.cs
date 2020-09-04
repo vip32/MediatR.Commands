@@ -30,6 +30,17 @@
                 return;
             }
 
+            AddDefaultResponseSchemas(context);
+
+            foreach (var registrations in this.configuration.Registrations
+                .Where(e => !e.Pattern.IsNullOrEmpty()).GroupBy(e => e.Pattern))
+            {
+                AddPathItem(context.Document.Paths, registrations.DistinctBy(r => r.Method), context);
+            }
+        }
+
+        private static void AddDefaultResponseSchemas(DocumentProcessorContext context)
+        {
             if (!ResponseSchemas.ContainsKey(nameof(ProblemDetails)))
             {
                 ResponseSchemas.Add(nameof(ProblemDetails), context.SchemaGenerator.Generate(typeof(ProblemDetails), context.SchemaResolver));
@@ -38,12 +49,6 @@
             if (!ResponseSchemas.ContainsKey(nameof(ValidationProblemDetails)))
             {
                 ResponseSchemas.Add(nameof(ValidationProblemDetails), context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver));
-            }
-
-            foreach (var registrations in this.configuration.Registrations
-                .Where(e => !e.Pattern.IsNullOrEmpty()).GroupBy(e => e.Pattern))
-            {
-                AddPathItem(context.Document.Paths, registrations.DistinctBy(r => r.Method), context);
             }
         }
 
@@ -105,7 +110,7 @@
                 operation.Responses.Add(((int)HttpStatusCode.BadRequest).ToString(), new OpenApiResponse
                 {
                     Description = string.Empty
-                    //Schema = problemDetailsSchema OR validationsProblemDetailsSchema
+                    //Schema = problemDetailsSchema OR validationsProblemDetailsSchema?
                 });
                 operation.Responses.Add(((int)HttpStatusCode.InternalServerError).ToString(), new OpenApiResponse
                 {
