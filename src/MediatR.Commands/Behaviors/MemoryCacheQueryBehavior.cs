@@ -20,12 +20,12 @@
         protected override async Task<TResponse> Process(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             // cache only if implements interface
-            if (!(request is ICachedQuery query))
+            if (!(request is ICachedQuery instance))
             {
                 return await next().ConfigureAwait(false);
             }
 
-            var cacheKey = query.CacheKey;
+            var cacheKey = instance.CacheKey;
             if (this.cache.TryGetValue(cacheKey, out TResponse cachedResult))
             {
                 this.Logger.LogDebug("cache hit; key: '{cacheKey}'.", cacheKey);
@@ -42,8 +42,8 @@
 
             using (var entry = this.cache.CreateEntry(cacheKey))
             {
-                entry.SlidingExpiration = query.SlidingExpiration;
-                entry.AbsoluteExpiration = query.AbsoluteExpiration;
+                entry.SlidingExpiration = instance.SlidingExpiration;
+                entry.AbsoluteExpiration = instance.AbsoluteExpiration;
                 entry.SetValue(result);
 
                 this.Logger.LogDebug("cache set; key: '{cacheKey}'.", cacheKey);

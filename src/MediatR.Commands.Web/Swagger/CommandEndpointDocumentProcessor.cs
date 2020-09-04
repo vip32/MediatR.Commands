@@ -46,17 +46,15 @@
                 ResponseSchemas.Add(nameof(ProblemDetails), context.SchemaGenerator.Generate(typeof(ProblemDetails), context.SchemaResolver));
             }
 
-            if (!ResponseSchemas.ContainsKey(nameof(ValidationProblemDetails)))
-            {
-                ResponseSchemas.Add(nameof(ValidationProblemDetails), context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver));
-            }
+            //if (!ResponseSchemas.ContainsKey(nameof(ValidationProblemDetails)))
+            //{
+            //    ResponseSchemas.Add(nameof(ValidationProblemDetails), context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver));
+            //}
         }
 
         private static void AddPathItem(IDictionary<string, OpenApiPathItem> items, IEnumerable<CommandEndpointRegistration> registrations, DocumentProcessorContext context)
         {
             var item = new OpenApiPathItem();
-            //var problemDetailsSchema = context.SchemaGenerator.Generate(typeof(ProblemDetails), context.SchemaResolver);
-            //var validationProblemDetailsSchema = context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver);
 
             foreach (var registration in registrations)
             {

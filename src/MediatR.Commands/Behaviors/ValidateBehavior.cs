@@ -7,10 +7,10 @@
     using MediatR;
     using Microsoft.Extensions.Logging;
 
-    public class ValidateCommandBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
+    public class ValidateBehavior<TRequest, TResponse> : PipelineBehaviorBase<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        public ValidateCommandBehavior(ILoggerFactory loggerFactory)
+        public ValidateBehavior(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
         }
@@ -20,16 +20,16 @@
             CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            // validate only if implements interface
-            if (!(request is IValidatedCommand command))
+            // validate commands/queries only if implements interface
+            if (!(request is IValidated instance))
             {
                 return await next().ConfigureAwait(false);
             }
 
-            var validationResult = command.Validate();
+            var validationResult = instance.Validate();
             if (!validationResult.IsValid)
             {
-                throw new ValidationException($"{command.GetType().Name} has validation errors: " + validationResult.Errors.Safe().Select(e => $"{e.PropertyName}={e}").ToString(", "), validationResult.Errors);
+                throw new ValidationException($"{instance.GetType().Name} has validation errors: " + validationResult.Errors.Safe().Select(e => $"{e.PropertyName}={e}").ToString(", "), validationResult.Errors);
             }
 
             return await next().ConfigureAwait(false); // continue pipeline if no validation errors

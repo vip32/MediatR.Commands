@@ -3,7 +3,7 @@
     using FluentValidation.Results;
     using MediatR.Commands;
 
-    public class UserCreateCommand : CommandBase<UserCreateCommandResponse>, IValidatedCommand
+    public class UserCreateCommand : CommandBase<UserCreateCommandResponse>, IValidated
     {
         public string FirstName { get; set; }
 

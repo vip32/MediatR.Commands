@@ -179,7 +179,7 @@
             catch (ValidationException ex) // 400
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Response.Headers.Add("Content-Type", "application/json");
+                context.Response.Headers.Add("Content-Type", "application/problem+json");
                 await JsonSerializer.SerializeAsync(
                         context.Response.Body,
                         new ProblemDetails
@@ -198,7 +198,7 @@
             catch (Exception ex) // 500
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.Headers.Add("Content-Type", "application/json");
+                context.Response.Headers.Add("Content-Type", "application/problem+json");
                 await JsonSerializer.SerializeAsync(
                         context.Response.Body,
                         new ProblemDetails
