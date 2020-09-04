@@ -6,6 +6,7 @@
     using System.Net;
     using System.Reflection;
     using Humanizer;
+    using Microsoft.AspNetCore.Mvc;
     using NJsonSchema;
     using NSwag;
     using NSwag.Generation.Processors;
@@ -29,6 +30,16 @@
                 return;
             }
 
+            if (!ResponseSchemas.ContainsKey(nameof(ProblemDetails)))
+            {
+                ResponseSchemas.Add(nameof(ProblemDetails), context.SchemaGenerator.Generate(typeof(ProblemDetails), context.SchemaResolver));
+            }
+
+            if (!ResponseSchemas.ContainsKey(nameof(ValidationProblemDetails)))
+            {
+                ResponseSchemas.Add(nameof(ValidationProblemDetails), context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver));
+            }
+
             foreach (var registrations in this.configuration.Registrations
                 .Where(e => !e.Pattern.IsNullOrEmpty()).GroupBy(e => e.Pattern))
             {
@@ -39,6 +50,8 @@
         private static void AddPathItem(IDictionary<string, OpenApiPathItem> items, IEnumerable<CommandEndpointRegistration> registrations, DocumentProcessorContext context)
         {
             var item = new OpenApiPathItem();
+            //var problemDetailsSchema = context.SchemaGenerator.Generate(typeof(ProblemDetails), context.SchemaResolver);
+            //var validationProblemDetailsSchema = context.SchemaGenerator.Generate(typeof(ValidationProblemDetails), context.SchemaResolver);
 
             foreach (var registration in registrations)
             {
@@ -72,7 +85,7 @@
 
                 if (registration.Response == null)
                 {
-                    operation.Responses.Add(200.ToString(), new OpenApiResponse
+                    operation.Responses.Add(((int)HttpStatusCode.OK).ToString(), new OpenApiResponse
                     {
                         Description = description,
                         Schema = hasResponseModel ? schema : null,
@@ -91,11 +104,13 @@
 
                 operation.Responses.Add(((int)HttpStatusCode.BadRequest).ToString(), new OpenApiResponse
                 {
-                    Description = string.Empty,
+                    Description = string.Empty
+                    //Schema = problemDetailsSchema OR validationsProblemDetailsSchema
                 });
                 operation.Responses.Add(((int)HttpStatusCode.InternalServerError).ToString(), new OpenApiResponse
                 {
-                    Description = string.Empty
+                    Description = nameof(ProblemDetails),
+                    Schema = ResponseSchemas[nameof(ProblemDetails)]
                 });
 
                 AddResponseHeaders(operation, registration);
