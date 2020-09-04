@@ -108,19 +108,16 @@ namespace WeatherForecast.Application.Web
 
                 // command routes (registrations)
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/reg/weatherforecasts/minimal",
-                    group: "WeatherForecast");
+                    "/reg/weatherforecasts/minimal", "WeatherForecast");
 
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    pattern: "/reg/weatherforecasts",
-                    group: "WeatherForecast",
+                    "/reg/weatherforecasts", "WeatherForecast",
                     response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
                         onSuccessStatusCode: HttpStatusCode.OK));
 
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    pattern: "/reg/weatherforecasts/{daysOffset}", // swagger: param needs to be camelized, due to matching camelized model property
-                    group: "WeatherForecast",
+                    "/reg/weatherforecasts/{daysOffset}", "WeatherForecast", // swagger: param needs to be camelized, due to matching camelized model property
                     response: new CommandEndpointResponse(
                         onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
                         onSuccessStatusCode: HttpStatusCode.OK));
@@ -136,12 +133,10 @@ namespace WeatherForecast.Application.Web
                 //    });
 
                 endpoints.MapGet<UserFindAllQuery>(
-                    "/users",
-                    group: "User");
+                    "/users", "User");
 
                 endpoints.MapGet<UserFindByIdQuery>(
-                    "/users/{userId}",
-                    group: "User");
+                    "/users/{userId}", "User");
 
                 endpoints.MapPost<UserCreateCommand>(
                     "/users",
@@ -155,8 +150,7 @@ namespace WeatherForecast.Application.Web
                     });
 
                 endpoints.MapPut<UserUpdateCommand>(
-                    "/users/{userId}",
-                    group: "User");
+                    "/users/{userId}", "User");
             });
         }
     }

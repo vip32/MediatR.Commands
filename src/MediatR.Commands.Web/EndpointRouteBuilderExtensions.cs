@@ -19,36 +19,56 @@
 
     public static partial class EndpointRouteBuilderExtensions
     {
-        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, string group = null, OpenApiDetails openApi = null)
+        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TQuery : IQuery
         {
-            endpoints.Map<TQuery>(pattern, HttpMethod.Get, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), group, openApi);
+            endpoints.Map<TQuery>(
+                pattern,
+                HttpMethod.Get,
+                group,
+                response ?? new CommandEndpointResponse(null, HttpStatusCode.OK),
+                openApi);
         }
 
-        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, string group = null, OpenApiDetails openApi = null)
+        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Post, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), group, openApi);
+            endpoints.Map<TCommand>(
+                pattern,
+                HttpMethod.Post,
+                group,
+                response ?? new CommandEndpointResponse(null, HttpStatusCode.OK),
+                openApi);
         }
 
-        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, string group = null, OpenApiDetails openApi = null)
+        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Put, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), group, openApi);
+            endpoints.Map<TCommand>(
+                pattern,
+                HttpMethod.Put,
+                group,
+                response ?? new CommandEndpointResponse(null, HttpStatusCode.OK),
+                openApi);
         }
 
-        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, CommandEndpointResponse response = null, string group = null, OpenApiDetails openApi = null)
+        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
             where TCommand : ICommand
         {
-            endpoints.Map<TCommand>(pattern, HttpMethod.Delete, response ?? new CommandEndpointResponse(null, System.Net.HttpStatusCode.OK), group, openApi);
+            endpoints.Map<TCommand>(
+                pattern,
+                HttpMethod.Delete,
+                group,
+                response ?? new CommandEndpointResponse(null, HttpStatusCode.OK),
+                openApi);
         }
 
         private static void Map<TRequest>(
             this IEndpointRouteBuilder endpoints,
             string pattern,
             HttpMethod method,
-            CommandEndpointResponse response = null,
             string group = null,
+            CommandEndpointResponse response = null,
             OpenApiDetails openApi = null)
         {
             if (pattern.IsNullOrEmpty())
