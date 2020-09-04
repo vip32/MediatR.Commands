@@ -155,7 +155,6 @@
             try
             {
                 var response = await mediator.Send(requestModel, context.RequestAborted).ConfigureAwait(false);
-
                 if (response is Unit) // Unit is the empty mediatr response
                 {
                     response = null;
