@@ -109,8 +109,8 @@
 
                 operation.Responses.Add(((int)HttpStatusCode.BadRequest).ToString(), new OpenApiResponse
                 {
-                    Description = string.Empty
-                    //Schema = problemDetailsSchema OR validationsProblemDetailsSchema?
+                    Description = nameof(ProblemDetails),
+                    Schema = ResponseSchemas[nameof(ProblemDetails)]
                 });
                 operation.Responses.Add(((int)HttpStatusCode.InternalServerError).ToString(), new OpenApiResponse
                 {

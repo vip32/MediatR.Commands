@@ -7,6 +7,7 @@
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using FluentValidation;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -175,7 +176,26 @@
                     await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
                 }
             }
-            catch (Exception ex)
+            catch (ValidationException ex) // 400
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.Headers.Add("Content-Type", "application/json");
+                await JsonSerializer.SerializeAsync(
+                        context.Response.Body,
+                        new ProblemDetails
+                        {
+                            Status = (int)HttpStatusCode.BadRequest,
+                            Title = "A validation error has occurred while executing the request",
+                            Type = ex.GetType().Name,
+                            Detail = ex.Message,
+                            Instance = id
+                        },
+                        typeof(ProblemDetails),
+                        null,
+                        context.RequestAborted).ConfigureAwait(false);
+                await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
+            }
+            catch (Exception ex) // 500
             {
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.Headers.Add("Content-Type", "application/json");
@@ -184,7 +204,7 @@
                         new ProblemDetails
                         {
                             Status = (int)HttpStatusCode.InternalServerError,
-                            Title = "An unhandled error occurred while processing the request",
+                            Title = "An unhandled error has occurred while processing the request",
                             Type = ex.GetType().Name,
                             Detail = ex.Message,
                             Instance = id

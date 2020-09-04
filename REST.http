@@ -42,6 +42,16 @@ Content-Type: application/json
 }
 
 ###################################################################################
+#### command, bad request due to validator
+POST {{baseUrl}}/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "FirstName" : "",
+    "LastName" : ""
+}
+
+###################################################################################
 #### command, no response
 PUT {{baseUrl}}{{userRoute}} HTTP/1.1
 Content-Type: application/json
