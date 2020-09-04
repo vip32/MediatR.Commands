@@ -62,6 +62,11 @@ GET {{baseUrl}}{{userRoute}} HTTP/1.1
 Content-Type: application/json
 
 ###################################################################################
-#### command, response
+#### command, response TODO=404
 GET {{baseUrl}}/users/unk HTTP/1.1
+Content-Type: application/json
+
+###################################################################################
+#### command, response TODO=500
+GET {{baseUrl}}/users/error HTTP/1.1
 Content-Type: application/json

@@ -3,11 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Net;
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.AspNetCore.Routing.Template;
     using Microsoft.AspNetCore.WebUtilities;
@@ -149,26 +152,47 @@
             }
 
             var mediator = context.RequestServices.GetService<IMediator>();
-            // TODO: try catch the following and return 500 with ProblemDetails when exception occurs
-            var response = await mediator.Send(requestModel, context.RequestAborted).ConfigureAwait(false);
-
-            if(response is Unit) // Unit is the empty mediatr response
+            try
             {
-                response = null;
+                var response = await mediator.Send(requestModel, context.RequestAborted).ConfigureAwait(false);
+
+                if (response is Unit) // Unit is the empty mediatr response
+                {
+                    response = null;
+                }
+
+                registration.Response?.Invoke(requestModel, response, context);
+                context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
+                context.Response.Headers.Add("Content-Type", registration.OpenApi?.Produces);
+
+                if (response != null && registration.Response?.IgnoreResponseBody == false)
+                {
+                    await JsonSerializer.SerializeAsync(
+                        context.Response.Body,
+                        response,
+                        response?.GetType() ?? registration.ResponseType,
+                        null,
+                        context.RequestAborted).ConfigureAwait(false);
+                    await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
+                }
             }
-
-            registration.Response?.Invoke(requestModel, response, context);
-            context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
-            context.Response.Headers.Add("Content-Type", registration.OpenApi?.Produces);
-
-            if (response != null && registration.Response?.IgnoreResponseBody == false)
+            catch (Exception ex)
             {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.Headers.Add("Content-Type", "application/json");
                 await JsonSerializer.SerializeAsync(
-                    context.Response.Body,
-                    response,
-                    response?.GetType() ?? registration.ResponseType,
-                    null,
-                    context.RequestAborted).ConfigureAwait(false);
+                        context.Response.Body,
+                        new ProblemDetails
+                        {
+                            Status = (int)HttpStatusCode.InternalServerError,
+                            Title = "An unhandled error occurred while processing the request",
+                            Type = ex.GetType().Name,
+                            Detail = ex.Message,
+                            Instance = id
+                        },
+                        typeof(ProblemDetails),
+                        null,
+                        context.RequestAborted).ConfigureAwait(false);
                 await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
             }
 

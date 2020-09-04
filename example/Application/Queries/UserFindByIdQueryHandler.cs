@@ -1,5 +1,6 @@
 ﻿namespace Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR.Commands;
@@ -20,6 +21,12 @@
         {
             return Task.Run(() =>
             {
+                if (request.UserId.Equals("error", StringComparison.OrdinalIgnoreCase))
+                {
+                    // trigger a fake error
+                    throw new ApplicationException("oops, error userid");
+                }
+
                 if (this.cache.TryGetValue($"users_{request.UserId}", out User user))
                 {
                     this.Logger.LogInformation($"USER FOUND: {request.UserId}");
