@@ -23,7 +23,7 @@
 
         private Func<object, object, HttpContext, Task> OnSuccess { get; }
 
-        public virtual void Invoke(object req, object res, HttpContext ctx)
+        public virtual void InvokeSuccess(object req, object res, HttpContext ctx)
         {
             this.OnSuccess?.Invoke(req, res, ctx);
         }
@@ -43,7 +43,7 @@
 
         private Func<TRequest, HttpContext, Task> OnSuccess { get; }
 
-        public override void Invoke(object req, object resp, HttpContext ctx)
+        public override void InvokeSuccess(object req, object resp, HttpContext ctx)
         {
             this.OnSuccess?.Invoke(req as TRequest, ctx);
         }
@@ -64,7 +64,7 @@
 
         private Func<TRequest, TResponse, HttpContext, Task> OnSuccess { get; }
 
-        public override void Invoke(object req, object res, HttpContext ctx)
+        public override void InvokeSuccess(object req, object res, HttpContext ctx)
         {
             this.OnSuccess?.Invoke(req as TRequest, res as TResponse, ctx);
         }

@@ -4,28 +4,25 @@
     using System.Collections.Generic;
     using System.Reflection;
 
-    public static partial class EndpointRouteBuilderExtensions
+    public static class ReflectionHelper
     {
-        public static class ReflectionHelper
+        public static void SetProperties(object instance, IDictionary<string, object> propertyItems)
         {
-            public static void SetProperties(object instance, IDictionary<string, object> propertyItems)
+            if (instance == null || propertyItems.IsNullOrEmpty())
             {
-                if (instance == null || propertyItems.IsNullOrEmpty())
-                {
-                    return;
-                }
+                return;
+            }
 
-                // or use https://github.com/ekonbenefits/dynamitey/wiki/UsageReallyLateBinding dynamic InvokeSetAll(object target, ...) =CASESENSITIVE
-                foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            // or use https://github.com/ekonbenefits/dynamitey/wiki/UsageReallyLateBinding dynamic InvokeSetAll(object target, ...) =CASESENSITIVE
+            foreach (var propertyInfo in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                foreach (var propertyItem in propertyItems.Safe())
                 {
-                    foreach (var propertyItem in propertyItems.Safe())
+                    var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+
+                    if (propertyItem.Key.SafeEquals(propertyInfo.Name) && propertyItem.Value != null && propertyInfo.CanWrite)
                     {
-                        var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
-
-                        if (propertyItem.Key.SafeEquals(propertyInfo.Name) && propertyItem.Value != null && propertyInfo.CanWrite)
-                        {
-                            propertyInfo.SetValue(instance, propertyItem.Value.To(propertyType), null);
-                        }
+                        propertyInfo.SetValue(instance, propertyItem.Value.To(propertyType), null);
                     }
                 }
             }
