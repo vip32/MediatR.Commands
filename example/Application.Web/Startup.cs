@@ -108,9 +108,6 @@ namespace WeatherForecast.Application.Web
 
                 // command routes (registrations)
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/reg/weatherforecasts/minimal", "WeatherForecast");
-
-                endpoints.MapGet<WeatherForecastsQuery>(
                     "/reg/weatherforecasts", "WeatherForecast",
                     response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
@@ -122,16 +119,7 @@ namespace WeatherForecast.Application.Web
                         onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
                         onSuccessStatusCode: HttpStatusCode.OK));
 
-                //endpoints.MapPost<CreateUserCommand>(
-                //    pattern: "/users",
-                //    response: new CommandEndpointResponse(
-                //        onSuccess: (req, res, ctx) => ctx.Response.Location("/users"),
-                //        onSuccessStatusCode: HttpStatusCode.Created),
-                //    openApi: new OpenApiDetails
-                //    {
-                //        GroupName = "User"
-                //    });
-
+                // command routes (registrations)
                 endpoints.MapGet<UserFindAllQuery>(
                     "/users", "User");
 
