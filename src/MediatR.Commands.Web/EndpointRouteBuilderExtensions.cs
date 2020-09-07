@@ -121,7 +121,7 @@
             var timer = Stopwatch.StartNew();
             var endpoint = context.GetEndpoint();
             var registration = endpoint.Metadata.GetMetadata<CommandEndpointRegistration>();
-            // TODO: abort if no registration!
+            // TODO: abort if no registration, 404?!
             var logger = context.RequestServices.GetService<ILoggerFactory>().CreateLogger(registration.RequestType);
 
             object requestModel;
@@ -154,18 +154,18 @@
             var parameterItems = GetParameterValues(registration.Pattern, context.Request.Path, context.Request.QueryString.Value);
             ReflectionHelper.SetProperties(requestModel, parameterItems);
 
-            var id = string.Empty;
+            var requestId = string.Empty;
             if (requestModel is ICommand command)
             {
-                id = command.CommandId;
-                logger.LogDebug("request: starting command (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registration.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
-                context.Response.Headers.Add("X-CommandId", id);
+                requestId = command.CommandId;
+                logger.LogDebug("request: starting command (type={commandRequestType}, id={commandId}), method={commandRequestMethod}) {commandRequestUri}", registration.RequestType.Name, requestId, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
+                context.Response.Headers.Add("X-CommandId", requestId);
             }
             else if (requestModel is IQuery query)
             {
-                id = query.QueryId;
-                logger.LogDebug("request: starting query (type={queryRequestType}, id={queryId}), method={queryRequestMethod}) {commandRequestUri}", registration.RequestType.Name, id, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
-                context.Response.Headers.Add("X-QueryId", id);
+                requestId = query.QueryId;
+                logger.LogDebug("request: starting query (type={queryRequestType}, id={queryId}), method={queryRequestMethod}) {commandRequestUri}", registration.RequestType.Name, requestId, context.Request.Method.ToUpper(), context.Request.GetUri().ToString());
+                context.Response.Headers.Add("X-QueryId", requestId);
             }
             else
             {
@@ -176,20 +176,24 @@
                 context,
                 registration,
                 requestModel,
-                id).ConfigureAwait(false);
+                requestId).ConfigureAwait(false);
 
             timer.Stop();
             if (requestModel is ICommand)
             {
-                logger.LogDebug("request: finished command (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+                logger.LogDebug("request: finished command (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, requestId, timer.ElapsedMilliseconds);
             }
             else if (requestModel is IQuery)
             {
-                logger.LogDebug("request: finished query (type={queryRequestType}, id={queryId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+                logger.LogDebug("request: finished query (type={queryRequestType}, id={queryId})) -> took {elapsed} ms", registration.RequestType.Name, requestId, timer.ElapsedMilliseconds);
             }
         }
 
-        private static async Task SendRequest(HttpContext context, CommandEndpointRegistration registration, object requestModel, string id)
+        private static async Task SendRequest(
+            HttpContext context,
+            CommandEndpointRegistration registration,
+            object requestModel,
+            string requestId)
         {
             var mediator = context.RequestServices.GetService<IMediator>();
             try
@@ -227,7 +231,7 @@
                             Title = "A validation error has occurred while executing the request",
                             Type = ex.GetType().Name,
                             Detail = ex.Message,
-                            Instance = id
+                            Instance = requestId
                         },
                         typeof(ProblemDetails),
                         null,
@@ -246,7 +250,7 @@
                             Title = "An unhandled error has occurred while processing the request",
                             Type = ex.GetType().Name,
                             Detail = ex.Message,
-                            Instance = id
+                            Instance = requestId
                         },
                         typeof(ProblemDetails),
                         null,
