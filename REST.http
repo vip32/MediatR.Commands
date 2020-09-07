@@ -3,18 +3,13 @@
 @baseUrl = https://localhost:5001
 
 ###################################################################################
-#### query, minimam
-GET {{baseUrl}}/reg/weatherforecasts/minimal HTTP/1.1
+#### query 1
+GET {{baseUrl}}/weatherforecasts HTTP/1.1
 Content-Type: application/json
 
 ###################################################################################
 #### query 1
-GET {{baseUrl}}/reg/weatherforecasts HTTP/1.1
-Content-Type: application/json
-
-###################################################################################
-#### query 1
-GET {{baseUrl}}/reg/weatherforecasts/12 HTTP/1.1
+GET {{baseUrl}}/weatherforecasts/12 HTTP/1.1
 Content-Type: application/json
 
 ###################################################################################

@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("weatherforecasts")]
+    [Route("api/weatherforecasts")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -28,8 +28,8 @@
         [Route("{daysOffset:int}")]
         public async Task<IEnumerable<WeatherForecastQueryResponse>> Get(int daysOffset)
         {
-            var query = new WeatherForecastsQuery(daysOffset);
-            return await this.mediator.Send(query).ConfigureAwait(false);
+            return await this.mediator.Send(
+                new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
         }
     }
 }

@@ -89,37 +89,31 @@ namespace WeatherForecast.Application.Web
 
                 endpoints.MapControllers();
 
-                // commands routes (without controllers)
-                endpoints.MapGet("/api/weatherforecasts", async context =>
-                {
-                    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
-                    var response = await mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
-                    context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
-                });
-                endpoints.MapGet("/api/weatherforecasts/{DaysOffset:int}", async context =>
-                {
-                    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
-                    var daysOffset = int.Parse((string)context.Request.RouteValues["DaysOffset"]);
-                    var response = await mediator.Send(new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
-                    context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
-                });
+                // commands routes (without controllers) WEATHERFORECASTS
+                //endpoints.MapGet("/api/weatherforecasts", async context =>
+                //{
+                //    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                //    var response = await mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
+                //    context.Response.ContentType = "application/json";
+                //    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                //});
+                //endpoints.MapGet("/api/weatherforecasts/{DaysOffset:int}", async context =>
+                //{
+                //    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                //    var daysOffset = int.Parse((string)context.Request.RouteValues["DaysOffset"]);
+                //    var response = await mediator.Send(new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
+                //    context.Response.ContentType = "application/json";
+                //    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
+                //});
 
-                // command routes (registrations)
+                // command routes (registrations) WEATHERFORECASTS
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/reg/weatherforecasts", "WeatherForecast",
-                    response: new CommandEndpointResponse<WeatherForecastsQuery, IEnumerable<WeatherForecastQueryResponse>>(
-                        onSuccess: (req, res, ctx) => ctx.Response.Location($"/api/customers/{req.QueryId}/{res.Count()}"),
-                        onSuccessStatusCode: HttpStatusCode.OK));
+                    "/weatherforecasts", "WeatherForecast");
 
                 endpoints.MapGet<WeatherForecastsQuery>(
-                    "/reg/weatherforecasts/{daysOffset}", "WeatherForecast", // swagger: param needs to be camelized, due to matching camelized model property
-                    response: new CommandEndpointResponse(
-                        onSuccess: (req, res, ctx) => ctx.Response.Location("/api/customers"),
-                        onSuccessStatusCode: HttpStatusCode.OK));
+                    "/weatherforecasts/{daysOffset}", "WeatherForecast"); // swagger: param needs to be camelized, due to matching camelized model property
 
-                // command routes (registrations)
+                // command routes (registrations) USERS
                 endpoints.MapGet<UserFindAllQuery>(
                     "/users", "User");
 
