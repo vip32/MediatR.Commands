@@ -172,6 +172,25 @@
                 // TODO: throw if unknown type
             }
 
+            await SendRequest(
+                context,
+                registration,
+                requestModel,
+                id).ConfigureAwait(false);
+
+            timer.Stop();
+            if (requestModel is ICommand)
+            {
+                logger.LogDebug("request: finished command (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+            }
+            else if (requestModel is IQuery)
+            {
+                logger.LogDebug("request: finished query (type={queryRequestType}, id={queryId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
+            }
+        }
+
+        private static async Task SendRequest(HttpContext context, CommandEndpointRegistration registration, object requestModel, string id)
+        {
             var mediator = context.RequestServices.GetService<IMediator>();
             try
             {
@@ -233,16 +252,6 @@
                         null,
                         context.RequestAborted).ConfigureAwait(false);
                 await context.Response.Body.FlushAsync(context.RequestAborted).ConfigureAwait(false);
-            }
-
-            timer.Stop();
-            if (requestModel is ICommand)
-            {
-                logger.LogDebug("request: finished command (type={commandRequestType}, id={commandId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
-            }
-            else if (requestModel is IQuery)
-            {
-                logger.LogDebug("request: finished query (type={queryRequestType}, id={queryId})) -> took {elapsed} ms", registration.RequestType.Name, id, timer.ElapsedMilliseconds);
             }
         }
 
