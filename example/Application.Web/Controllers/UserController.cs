@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Threading.Tasks;
     using global::Application;
     using MediatR;
+    using MediatR.Commands;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -19,17 +21,35 @@
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return await this.mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
+            return await this.mediator.Send(
+                new UserFindAllQuery()).ConfigureAwait(false);
         }
 
         [HttpGet]
-        [Route("{daysOffset:int}")]
-        public async Task<IEnumerable<WeatherForecastQueryResponse>> Get(int daysOffset)
+        [Route("{userId}")]
+        public async Task<User> Get(string userId)
         {
             return await this.mediator.Send(
-                new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
+                new UserFindByIdQuery(userId)).ConfigureAwait(false);
+        }
+
+        [HttpPost]
+        public async Task Post(User user)
+        {
+            var res = await this.mediator.Send(
+                new UserCreateCommand(user.FirstName, user.LastName)).ConfigureAwait(false);
+            await this.Response.Location($"/users/{res.UserId}").ConfigureAwait(false);
+            this.Response.StatusCode = (int)HttpStatusCode.Created;
+        }
+
+        [HttpPut]
+        [Route("{userId}")]
+        public async Task Put(User user)
+        {
+            await this.mediator.Send(
+                new UserUpdateCommand(user.FirstName, user.LastName) { UserId = user.Id }).ConfigureAwait(false);
         }
     }
 }
