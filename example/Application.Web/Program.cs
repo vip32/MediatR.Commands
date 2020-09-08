@@ -1,4 +1,4 @@
-namespace WeatherForecast.Application.Web
+namespace Application.Web
 {
     using System;
     using System.IO;

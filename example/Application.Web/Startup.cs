@@ -1,8 +1,7 @@
-namespace WeatherForecast.Application.Web
+namespace Application.Web
 {
     using System.Net;
     using System.Threading.Tasks;
-    using global::Application;
     using MediatR;
     using MediatR.Commands;
     using Microsoft.AspNetCore.Builder;

@@ -1,4 +1,4 @@
-﻿namespace Stateless.Web.Application.Controllers
+﻿namespace Application.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
