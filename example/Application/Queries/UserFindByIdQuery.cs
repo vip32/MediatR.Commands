@@ -4,6 +4,10 @@
 
     public class UserFindByIdQuery : QueryBase<User>
     {
+        public UserFindByIdQuery()
+        {
+        }
+
         public UserFindByIdQuery(string userId)
         {
             this.UserId = userId;

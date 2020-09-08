@@ -5,6 +5,10 @@
 
     public class UserCreateCommand : CommandBase<UserCreateCommandResponse>, IValidated
     {
+        public UserCreateCommand()
+        {
+        }
+
         public UserCreateCommand(string firstName, string lastName)
         {
             this.FirstName = firstName;

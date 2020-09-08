@@ -36,20 +36,18 @@
         }
 
         [HttpPost]
-        public async Task Post(User user)
+        public async Task Post(UserCreateCommand command)
         {
-            var res = await this.mediator.Send(
-                new UserCreateCommand(user.FirstName, user.LastName)).ConfigureAwait(false);
+            var res = await this.mediator.Send(command).ConfigureAwait(false);
             await this.Response.Location($"/users/{res.UserId}").ConfigureAwait(false);
             this.Response.StatusCode = (int)HttpStatusCode.Created;
         }
 
         [HttpPut]
         [Route("{userId}")]
-        public async Task Put(User user)
+        public async Task Put(UserUpdateCommand command)
         {
-            await this.mediator.Send(
-                new UserUpdateCommand(user.FirstName, user.LastName) { UserId = user.Id }).ConfigureAwait(false);
+            await this.mediator.Send(command).ConfigureAwait(false);
         }
     }
 }

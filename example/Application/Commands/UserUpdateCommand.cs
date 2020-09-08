@@ -4,6 +4,10 @@
 
     public class UserUpdateCommand : CommandBase
     {
+        public UserUpdateCommand()
+        {
+        }
+
         public UserUpdateCommand(string firstName, string lastName)
         {
             this.FirstName = firstName;

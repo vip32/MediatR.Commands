@@ -15,9 +15,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CB478E82-491C-4633-B1B6-732D86BEF5B6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{DD9085AE-3689-4CCC-AF8E-96CE94845AB3}"
-	ProjectSection(SolutionItems) = preProject
-		CustomWebApplicationFactory.cs = CustomWebApplicationFactory.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1187261C-39AD-46D6-BF52-203DA1ADADE1}"
 EndProject
@@ -31,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.Web", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.UnitTests", "tests\MediatR.Commands.UnitTests\MediatR.Commands.UnitTests.csproj", "{73FEC25E-1939-44EE-A845-6C7D9C47D205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "example\IntegrationTests\IntegrationTests.csproj", "{9F8C41D7-5E28-4322-A84A-D6DC515F1A17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "example\IntegrationTests\IntegrationTests.csproj", "{9F8C41D7-5E28-4322-A84A-D6DC515F1A17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

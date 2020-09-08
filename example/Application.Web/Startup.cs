@@ -28,7 +28,7 @@ namespace Application.Web
 
             // commands registrations
             services.AddSingleton<IMemoryCache>(sp => new MemoryCache(new MemoryCacheOptions()));
-            services.AddMediatR(new[] { typeof(WeatherForecastsQuery).Assembly });
+            services.AddMediatR(new[] { typeof(UserFindAllQuery).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
@@ -39,19 +39,6 @@ namespace Application.Web
             services.AddSwaggerDocument((c, sp) =>
                 sp.GetServices<IDocumentProcessor>()?.ForEach(dp => c.DocumentProcessors.Add(dp)));
 
-            // optional authentication
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(options =>
-            //{
-            //    options.Authority = "TODO";
-            //    options.Audience = "TODO";
-            //    options.TokenValidationParameters.ValidateLifetime = true;
-            //    options.TokenValidationParameters.ClockSkew = System.TimeSpan.Zero;
-            //});
-
             services.AddAuthorization();
         }
 
@@ -61,8 +48,6 @@ namespace Application.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            var a = app.ApplicationServices.GetRequiredService<IApiDescriptionGroupCollectionProvider>();
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
@@ -106,6 +91,20 @@ namespace Application.Web
                 endpoints.MapPut<UserUpdateCommand>(
                     "/users/{userId}", "User");
             });
+
+            this.SeedCache(app);
+        }
+
+        private void SeedCache(IApplicationBuilder app)
+        {
+            // seed the cache with test data.
+#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+            var cache = app.ApplicationServices.GetRequiredService<IMemoryCache>();
+#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+            var user1 = new User { FirstName = "John", LastName = "Doe01", Id = "aaa" };
+            var user2 = new User { FirstName = "John", LastName = "Doe02", Id = "bbb" };
+            cache.Set($"users_{user1.Id}", user1);
+            cache.Set($"users_{user2.Id}", user2);
         }
     }
 }
