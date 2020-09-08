@@ -85,7 +85,7 @@ namespace Application.Web
                 // controller commands/queries (/api/users)
                 endpoints.MapControllers();
 
-                // controllerless commands/queries (/users)
+                // endpoint commands/queries (/users)
                 endpoints.MapGet<UserFindAllQuery>(
                     "/users", "User");
 
