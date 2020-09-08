@@ -99,7 +99,7 @@ namespace WeatherForecast.Application.Web
                         onSuccess: (req, res, ctx) => ctx.Response.Location($"/users/{res.UserId}"),
                         onSuccessStatusCode: HttpStatusCode.Created,
                         ignoreResponseBody: true),
-                    openApi: new OpenApiDetails("User")
+                    openApi: new OpenApiOperation("User")
                     {
                         RequestBodyDescription = "The user details"
                     });

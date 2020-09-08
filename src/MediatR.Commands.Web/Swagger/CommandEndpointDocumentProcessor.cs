@@ -59,13 +59,13 @@
             foreach (var registration in registrations)
             {
                 var method = registration.Method.ToString().ToLower();
-                var operation = new OpenApiOperation
+                var operation = new NSwag.OpenApiOperation
                 {
                     Description = registration.OpenApi.Description,
                     Summary = registration.OpenApi.Summary,
                     OperationId = GetStringSha256Hash($"{method} {registration.Pattern}"),
-                    Tags = new[] { !registration.OpenApi.GroupName.IsNullOrEmpty() ? $"{registration.OpenApi.GroupPrefix} ({registration.OpenApi.GroupName})" : registration.OpenApi.GroupPrefix }.ToList(),
-                    Produces = !registration.OpenApi.Produces.IsNullOrEmpty() ? registration.OpenApi.Produces.Split(';').Distinct().ToList() : new[] { "application/json" }.ToList()
+                    Tags = (new[] { !registration.OpenApi.GroupName.IsNullOrEmpty() ? $"{registration.OpenApi.GroupPrefix} ({registration.OpenApi.GroupName})" : registration.OpenApi.GroupPrefix }).ToList(),
+                    Produces = !registration.OpenApi.Produces.IsNullOrEmpty() ? registration.OpenApi.Produces.Split(';').Distinct().ToList() : (new[] { "application/json" }).ToList()
                     //RequestBody = new OpenApiRequestBody{}
                 };
 
@@ -126,7 +126,7 @@
             }
         }
 
-        private static void AddResponseHeaders(OpenApiOperation operation, CommandEndpointRegistration registration)
+        private static void AddResponseHeaders(NSwag.OpenApiOperation operation, CommandEndpointRegistration registration)
         {
             foreach (var response in operation.Responses)
             {
@@ -141,7 +141,7 @@
             }
         }
 
-        private static void AddOperationParameters(OpenApiOperation operation, string method, CommandEndpointRegistration registration, DocumentProcessorContext context)
+        private static void AddOperationParameters(NSwag.OpenApiOperation operation, string method, CommandEndpointRegistration registration, DocumentProcessorContext context)
         {
             if (registration.RequestType != null)
             {
@@ -161,7 +161,7 @@
             }
         }
 
-        private static void AddQueryOperation(OpenApiOperation operation, CommandEndpointRegistration registration, bool patternParametersOnly = false)
+        private static void AddQueryOperation(NSwag.OpenApiOperation operation, CommandEndpointRegistration registration, bool patternParametersOnly = false)
         {
             foreach (var property in registration.RequestType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
@@ -219,7 +219,7 @@
             }
         }
 
-        private static void AddBodyOperation(OpenApiOperation operation, CommandEndpointRegistration registration, DocumentProcessorContext context)
+        private static void AddBodyOperation(NSwag.OpenApiOperation operation, CommandEndpointRegistration registration, DocumentProcessorContext context)
         {
             operation.Parameters.Add(new OpenApiParameter
             {

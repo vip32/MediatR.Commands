@@ -17,7 +17,7 @@
 
         public bool HasResponse => this.ResponseType != null;
 
-        public OpenApiDetails OpenApi { get; set; }
+        public OpenApiOperation OpenApi { get; set; }
 
         public CommandEndpointResponse Response { get; set; }
     }

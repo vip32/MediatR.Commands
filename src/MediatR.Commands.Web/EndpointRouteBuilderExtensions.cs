@@ -9,7 +9,7 @@
 
     public static partial class EndpointRouteBuilderExtensions
     {
-        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapGet<TQuery>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiOperation openApi = null)
             where TQuery : IQuery
         {
             endpoints.Map<TQuery>(
@@ -20,7 +20,7 @@
                 openApi);
         }
 
-        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapPost<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiOperation openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(
@@ -31,7 +31,7 @@
                 openApi);
         }
 
-        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapPut<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiOperation openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(
@@ -42,7 +42,7 @@
                 openApi);
         }
 
-        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiDetails openApi = null)
+        public static void MapDelete<TCommand>(this IEndpointRouteBuilder endpoints, string pattern, string group = null, CommandEndpointResponse response = null, OpenApiOperation openApi = null)
             where TCommand : ICommand
         {
             endpoints.Map<TCommand>(
@@ -59,7 +59,7 @@
             HttpMethod method,
             string group = null,
             CommandEndpointResponse response = null,
-            OpenApiDetails openApi = null)
+            OpenApiOperation openApi = null)
         {
             if (pattern.IsNullOrEmpty())
             {
@@ -76,7 +76,7 @@
             var configuration = endpoints.ServiceProvider.GetService<ICommandEndpointConfiguration>() // =singleton
                 ?? throw new InvalidOperationException("ICommandEndpointRegistrations has not been added to IServiceCollection. You can add it with services.AddCommandEndpoints(...);");
             var registration = configuration.AddRegistration<TRequest>(pattern, method);
-            registration.OpenApi = openApi ?? new OpenApiDetails() { GroupName = group ?? pattern.SliceFromLast("/").SliceTill("?").SliceTill("{").EmptyToNull() ?? "Undefined" };
+            registration.OpenApi = openApi ?? new OpenApiOperation() { GroupName = group ?? pattern.SliceFromLast("/").SliceTill("?").SliceTill("{").EmptyToNull() ?? "Undefined" };
             registration.Response = response;
 
             IEndpointConventionBuilder builder = null;

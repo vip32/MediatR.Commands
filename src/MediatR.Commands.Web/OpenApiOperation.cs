@@ -1,17 +1,17 @@
 ﻿namespace MediatR.Commands
 {
-    public class OpenApiDetails
+    public class OpenApiOperation
     {
-        public OpenApiDetails()
+        public OpenApiOperation()
         {
         }
 
-        public OpenApiDetails(string groupName)
+        public OpenApiOperation(string groupName)
         {
             this.GroupName = groupName;
         }
 
-        public OpenApiDetails(string groupName, string description)
+        public OpenApiOperation(string groupName, string description)
         {
             this.GroupName = groupName;
             this.Description = description;
