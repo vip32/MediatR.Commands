@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Net;
+    using System.Runtime.Serialization;
     using System.Text.Json;
     using System.Threading.Tasks;
     using FluentValidation;
@@ -49,13 +50,13 @@
             }
             else
             {
-                try
+                if (registration.RequestType.HasDefaultConstructor())
                 {
-                    requestModel = Activator.CreateInstance(registration.RequestType);
+                    requestModel = Activator.CreateInstance(registration.RequestType); // calls ctor
                 }
-                catch (MissingMethodException) // tried to create instance of type with no ctor
+                else
                 {
-                    requestModel = System.Runtime.Serialization.FormatterServices.GetUninitializedObject(registration.RequestType); //does not call ctor
+                    requestModel = FormatterServices.GetUninitializedObject(registration.RequestType); //does not call ctor
                 }
             }
 
