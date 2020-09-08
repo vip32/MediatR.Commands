@@ -83,33 +83,10 @@ namespace WeatherForecast.Application.Web
                     return Task.CompletedTask;
                 });
 
+                // controller commands/queries (/api/users)
                 endpoints.MapControllers();
 
-                // commands routes (without controllers) WEATHERFORECASTS
-                //endpoints.MapGet("/api/weatherforecasts", async context =>
-                //{
-                //    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
-                //    var response = await mediator.Send(new WeatherForecastsQuery()).ConfigureAwait(false);
-                //    context.Response.ContentType = "application/json";
-                //    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
-                //});
-                //endpoints.MapGet("/api/weatherforecasts/{DaysOffset:int}", async context =>
-                //{
-                //    var mediator = context.Request.HttpContext.RequestServices.GetRequiredService<IMediator>();
-                //    var daysOffset = int.Parse((string)context.Request.RouteValues["DaysOffset"]);
-                //    var response = await mediator.Send(new WeatherForecastsQuery(daysOffset)).ConfigureAwait(false);
-                //    context.Response.ContentType = "application/json";
-                //    await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
-                //});
-
-                // command routes (registrations) WEATHERFORECASTS
-                endpoints.MapGet<WeatherForecastsQuery>(
-                    "/weatherforecasts", "WeatherForecast");
-
-                endpoints.MapGet<WeatherForecastsQuery>(
-                    "/weatherforecasts/{daysOffset}", "WeatherForecast"); // swagger: param needs to be camelized, due to matching camelized model property
-
-                // command routes (registrations) USERS
+                // controllerless commands/queries (/users)
                 endpoints.MapGet<UserFindAllQuery>(
                     "/users", "User");
 

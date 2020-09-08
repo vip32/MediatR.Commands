@@ -1,16 +1,7 @@
 # https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 
-@baseUrl = https://localhost:5001
-
-###################################################################################
-#### query 1
-GET {{baseUrl}}/weatherforecasts HTTP/1.1
-Content-Type: application/json
-
-###################################################################################
-#### query 1
-GET {{baseUrl}}/weatherforecasts/12 HTTP/1.1
-Content-Type: application/json
+# @baseUrl = https://localhost:5001/api # controller commands/queries (/api/users)
+@baseUrl = https://localhost:5001 # controllerless commands/queries (/users)
 
 ###################################################################################
 #### command, no response (ignored)
