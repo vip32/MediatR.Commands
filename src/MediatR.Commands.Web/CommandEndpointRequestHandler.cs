@@ -49,7 +49,14 @@
             }
             else
             {
-                requestModel = Activator.CreateInstance(registration.RequestType);
+                try
+                {
+                    requestModel = Activator.CreateInstance(registration.RequestType);
+                }
+                catch (MissingMethodException) // tried to create instance of type with no ctor
+                {
+                    requestModel = System.Runtime.Serialization.FormatterServices.GetUninitializedObject(registration.RequestType); //does not call ctor
+                }
             }
 
             // map path and querystring values to created request model
