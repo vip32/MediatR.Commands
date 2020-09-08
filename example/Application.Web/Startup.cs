@@ -1,16 +1,12 @@
 namespace WeatherForecast.Application.Web
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using global::Application;
     using MediatR;
     using MediatR.Commands;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;

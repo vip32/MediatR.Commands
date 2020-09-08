@@ -1,6 +1,5 @@
 ﻿namespace Application
 {
-    using MediatR;
     using MediatR.Commands;
 
     public class UserUpdateCommand : CommandBase
