@@ -1,4 +1,4 @@
-namespace Application.Web
+namespace Application.Web.Api
 {
     using System.Net;
     using System.Threading.Tasks;
@@ -6,7 +6,6 @@ namespace Application.Web
     using MediatR.Commands;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

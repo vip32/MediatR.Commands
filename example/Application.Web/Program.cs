@@ -1,7 +1,8 @@
-namespace Application.Web
+namespace Application.Web.Aapi
 {
     using System;
     using System.IO;
+    using Application.Web.Api;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
