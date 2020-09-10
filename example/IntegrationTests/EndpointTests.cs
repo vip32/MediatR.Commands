@@ -36,7 +36,7 @@
             }
         }
 
-        // TODO: create swagger.json based typed httpclient >> https://stu.dev/generating-typed-client-for-httpclientfactory-with-nswag/
+        // TODO: create swagger.json based typed httpclient/ts client >> https://stu.dev/generating-typed-client-for-httpclientfactory-with-nswag/
 
         [Fact]
         public async Task UserFindAllQueryTest()
