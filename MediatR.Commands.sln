@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{DD90
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1187261C-39AD-46D6-BF52-203DA1ADADE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web.Api", "example\Application.Web\Application.Web.Api.csproj", "{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web.Api", "example\Application.Web.Api\Application.Web.Api.csproj", "{4ECB7E65-6BD5-4CE5-8E9B-8C4A0C7BBB3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands", "src\MediatR.Commands\MediatR.Commands.csproj", "{56B7E17A-ED9B-40D1-801D-17F911A41908}"
 EndProject

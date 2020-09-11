@@ -63,8 +63,8 @@
                 {
                     Description = registration.OpenApi.Description,
                     Summary = registration.OpenApi.Summary,
-                    OperationId = GetStringSha256Hash($"{method} {registration.Pattern}"),
-                    Tags = new[] { !registration.OpenApi.GroupName.IsNullOrEmpty() ? $"{registration.OpenApi.GroupPrefix} ({registration.OpenApi.GroupName})" : registration.OpenApi.GroupPrefix }.ToList(),
+                    OperationId = registration.RequestType.Name, //GetStringSha256Hash($"{method} {registration.Pattern}"),
+                    Tags = new[] { !registration.OpenApi.GroupName.IsNullOrEmpty() ? $"{registration.OpenApi.GroupPrefix} {registration.OpenApi.GroupName}".Trim() : registration.OpenApi.GroupPrefix }.ToList(),
                     Produces = !registration.OpenApi.Produces.IsNullOrEmpty() ? registration.OpenApi.Produces.Split(';').Distinct().ToList() : new[] { "application/json" }.ToList()
                     //RequestBody = new OpenApiRequestBody{}
                 };
