@@ -1,6 +1,6 @@
 ﻿namespace IntegrationTests
 {
-    using Application.Web;
+    using Application.Web.Api;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.Extensions.Hosting;

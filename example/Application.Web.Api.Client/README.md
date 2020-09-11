@@ -1,0 +1,1 @@
+﻿ApiClient ist being generated according to https://stu.dev/generating-typed-client-for-httpclientfactory-with-nswag/
