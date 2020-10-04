@@ -32,3 +32,22 @@ Controller
         }
     }
 ```
+
+or without Controllers [see Startup.cs](https://github.com/vip32/MediatR.Commands/blob/5202b64067d785828277c048ed87ad426d546ff8/example/Application.Web.Api/Startup.cs#L73-L77)
+```
+services.AddCommandEndpoints(); // ConfigureServices
+
+app.UseEndpoints(endpoints => // Configure
+{
+  ... 
+
+  endpoints.MapGet<UserFindAllQuery>(
+    "/users", "User");
+
+  endpoints.MapGet<UserFindByIdQuery>(
+    "/users/{userId}", "User");
+
+  ...
+}
+```
+```
