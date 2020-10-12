@@ -5,7 +5,7 @@
 //----------------------
 
 {
-  "x-generator": "NSwag v13.7.1.0 (NJsonSchema v10.1.26.0 (Newtonsoft.Json v10.0.0.0))",
+  "x-generator": "NSwag v13.8.2.0 (NJsonSchema v10.2.2.0 (Newtonsoft.Json v10.0.0.0))",
   "swagger": "2.0",
   "info": {
     "title": "My Title",
@@ -44,6 +44,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -77,6 +78,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -155,6 +157,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -188,6 +191,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -252,6 +256,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -285,6 +290,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -370,6 +376,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -403,6 +410,7 @@
             "description": "ProblemDetails",
             "schema": {
               "type": "object",
+              "additionalProperties": {},
               "properties": {
                 "type": {
                   "type": "string"
@@ -439,6 +447,7 @@
   "definitions": {
     "ProblemDetails": {
       "type": "object",
+      "additionalProperties": {},
       "properties": {
         "type": {
           "type": "string"
