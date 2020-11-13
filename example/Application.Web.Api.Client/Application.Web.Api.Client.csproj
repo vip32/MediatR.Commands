@@ -29,4 +29,8 @@
     </ItemGroup>
   </Target>
 
+  <ItemGroup>
+    <Compile Include="..\..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+  </ItemGroup>
+
 </Project>

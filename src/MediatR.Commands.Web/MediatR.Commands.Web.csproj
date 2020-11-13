@@ -25,4 +25,8 @@
     <ProjectReference Include="..\MediatR.Commands\MediatR.Commands.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+  </ItemGroup>
+
 </Project>

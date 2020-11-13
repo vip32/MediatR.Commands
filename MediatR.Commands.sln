@@ -5,7 +5,6 @@ VisualStudioVersion = 16.0.29924.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}"
 	ProjectSection(SolutionItems) = preProject
-		azure-pipelines.yml = azure-pipelines.yml
 		Directory.Build.props = Directory.Build.props
 		GitVersion.yml = GitVersion.yml
 		README.md = README.md
@@ -30,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.Commands.UnitTests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "example\IntegrationTests\IntegrationTests.csproj", "{9F8C41D7-5E28-4322-A84A-D6DC515F1A17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Web.Api.Client", "example\Application.Web.Api.Client\Application.Web.Api.Client.csproj", "{04179A42-AC33-43F5-9DF9-087AD47F8C10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Web.Api.Client", "example\Application.Web.Api.Client\Application.Web.Api.Client.csproj", "{04179A42-AC33-43F5-9DF9-087AD47F8C10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{4A08E8F2-2515-4635-8574-45DF8566CDD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +67,8 @@ Global
 		{04179A42-AC33-43F5-9DF9-087AD47F8C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04179A42-AC33-43F5-9DF9-087AD47F8C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04179A42-AC33-43F5-9DF9-087AD47F8C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A08E8F2-2515-4635-8574-45DF8566CDD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A08E8F2-2515-4635-8574-45DF8566CDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +81,7 @@ Global
 		{73FEC25E-1939-44EE-A845-6C7D9C47D205} = {1187261C-39AD-46D6-BF52-203DA1ADADE1}
 		{9F8C41D7-5E28-4322-A84A-D6DC515F1A17} = {DD9085AE-3689-4CCC-AF8E-96CE94845AB3}
 		{04179A42-AC33-43F5-9DF9-087AD47F8C10} = {DD9085AE-3689-4CCC-AF8E-96CE94845AB3}
+		{4A08E8F2-2515-4635-8574-45DF8566CDD6} = {EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B3F04A01-4720-4805-8957-6C749E5595CD}
