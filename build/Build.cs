@@ -21,14 +21,14 @@ using static Nuke.Common.Tools.NSwag.NSwagTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions("github-actions",
-    GitHubActionsImage.UbuntuLatest,
-    AutoGenerate = true,
-    PublishArtifacts = true,
-    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
-    OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
-    OnPullRequestBranches = new[] { "features/*" },
-    ImportSecrets = new[] { nameof(NugetApiKey) })]
+//[GitHubActions("github-actions",
+//    GitHubActionsImage.UbuntuLatest,
+//    AutoGenerate = true,
+//    PublishArtifacts = true,
+//    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+//    OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
+//    OnPullRequestBranches = new[] { "features/*" },
+//    ImportSecrets = new[] { nameof(NugetApiKey) })]
 //[AzurePipelines(
 //    AzurePipelinesImage.UbuntuLatest,
 //    AutoGenerate = true,
@@ -50,7 +50,7 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(UpdateBuildNumber = true/*, Framework = "netcoreapp3.1"*/)] readonly GitVersion GitVersion;
+    [GitVersion(UpdateBuildNumber = true, Framework = "netcoreapp3.0")] readonly GitVersion GitVersion;
 
     AbsolutePath SourcesDirectory => RootDirectory / "src";
 
