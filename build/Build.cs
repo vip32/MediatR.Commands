@@ -21,14 +21,14 @@ using static Nuke.Common.Tools.NSwag.NSwagTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-//[GitHubActions("github-actions",
-//    GitHubActionsImage.UbuntuLatest,
-//    AutoGenerate = true,
-//    PublishArtifacts = true,
-//    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
-//    OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
-//    OnPullRequestBranches = new[] { "features/*" },
-//    ImportSecrets = new[] { nameof(NugetApiKey) })]
+[GitHubActions("github-actions",
+    GitHubActionsImage.UbuntuLatest,
+    AutoGenerate = true,
+    PublishArtifacts = true,
+    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+    OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
+    OnPullRequestBranches = new[] { "features/*" },
+    ImportSecrets = new[] { nameof(NugetApiKey) })]
 //[AzurePipelines(
 //    AzurePipelinesImage.UbuntuLatest,
 //    AutoGenerate = true,
@@ -49,8 +49,8 @@ class Build : NukeBuild
     readonly string NugetApiKey;
 
     [Solution] readonly Solution Solution;
-    [GitRepository] readonly GitRepository GitRepository;
-    [GitVersion(UpdateBuildNumber = true, Framework = "netcoreapp3.0")] readonly GitVersion GitVersion;
+    //[GitRepository] readonly GitRepository GitRepository;
+    //[GitVersion(UpdateBuildNumber = true, Framework = "netcoreapp3.0")] readonly GitVersion GitVersion;
 
     AbsolutePath SourcesDirectory => RootDirectory / "src";
 
@@ -83,9 +83,9 @@ class Build : NukeBuild
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                .SetFileVersion(GitVersion.AssemblySemFileVer)
-                .SetInformationalVersion(GitVersion.InformationalVersion)
+                //.SetAssemblyVersion(GitVersion.AssemblySemVer)
+                //.SetFileVersion(GitVersion.AssemblySemFileVer)
+                //.SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore());
         });
 
@@ -117,7 +117,7 @@ class Build : NukeBuild
           DotNetPack(s => s
               .EnableNoBuild()
               .EnableNoRestore()
-              .SetVersion(GitVersion.NuGetVersionV2)
+              //.SetVersion(GitVersion.NuGetVersionV2)
               .SetNoDependencies(true)
               .SetConfiguration(Configuration)
               .CombineWith(projects, (s, p) => s
@@ -156,9 +156,9 @@ class Build : NukeBuild
 
             DotNetPublish(s => s
                 .SetConfiguration(Configuration)
-                .SetAssemblyVersion(GitVersion.AssemblySemVer)
-                .SetFileVersion(GitVersion.AssemblySemFileVer)
-                .SetInformationalVersion(GitVersion.InformationalVersion)
+                //.SetAssemblyVersion(GitVersion.AssemblySemVer)
+                //.SetFileVersion(GitVersion.AssemblySemFileVer)
+                //.SetInformationalVersion(GitVersion.InformationalVersion)
                 .EnableNoRestore()
                 .CombineWith(projects, (x, p) => x
                     .SetProject(p)
@@ -206,7 +206,7 @@ class Build : NukeBuild
                 .SetExceptionClass("{controller}ClientException")
             );
 
-            var version = GitRepository.Branch.Equals("main", StringComparison.OrdinalIgnoreCase) ? GitVersion.MajorMinorPatch : GitVersion.NuGetVersionV2;
+            //var version = GitRepository.Branch.Equals("main", StringComparison.OrdinalIgnoreCase) ? GitVersion.MajorMinorPatch : GitVersion.NuGetVersionV2;
 
             DotNet($"new classlib -o {clientProjDir}", workingDirectory: clientProjDir);
             DeleteFile(clientProjDir / "Class1.cs");
@@ -217,7 +217,7 @@ class Build : NukeBuild
                 .SetProject(clientProjDir)
                 .SetOutputDirectory(ArtifactsDirectory)
                 .SetConfiguration(Configuration)
-                .SetVersion(version)
+                //.SetVersion(version)
                 .SetIncludeSymbols(true)
            );
         });
