@@ -1,5 +1,5 @@
 variables:
-- group: vars # azure pipelines variable group https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azdevops&tabs=yaml
+- group: vars
 - name: buildConfiguration
   value: 'Release'
 
@@ -17,7 +17,7 @@ steps:
 #- task: UseDotNet@2
 #  displayName: Install dotnet SDK
 #  inputs:
-#    version: '3.1.x'
+#    version: '5.0.x'
 #    packageType: sdk
 
 - task: DotNetCoreCLI@2
