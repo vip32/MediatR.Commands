@@ -21,14 +21,14 @@ using static Nuke.Common.Tools.NSwag.NSwagTasks;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-[GitHubActions("github-actions",
-    GitHubActionsImage.UbuntuLatest,
-    AutoGenerate = true,
-    PublishArtifacts = true,
-    InvokedTargets = new[] { nameof(Test), nameof(Pack) },
-    OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
-    OnPullRequestBranches = new[] { "features/*" },
-    ImportSecrets = new[] { nameof(NugetApiKey) })]
+// [GitHubActions("github-actions",
+//     GitHubActionsImage.UbuntuLatest,
+//     AutoGenerate = true,
+//     PublishArtifacts = true,
+//     InvokedTargets = new[] { nameof(Test), nameof(Pack) },
+//     OnPushBranches = new[] { "master", "develop", "refs/tags/v*" },
+//     OnPullRequestBranches = new[] { "features/*" },
+//     ImportSecrets = new[] { nameof(NugetApiKey) })]
 //[AzurePipelines(
 //    AzurePipelinesImage.UbuntuLatest,
 //    AutoGenerate = true,
