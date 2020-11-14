@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29924.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{EF5CCB9F-F98D-4F14-A1B2-AA034AB50591}"
 	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.full.yml = azure-pipelines.full.yml
 		Directory.Build.props = Directory.Build.props
 		GitVersion.yml = GitVersion.yml
 		README.md = README.md
