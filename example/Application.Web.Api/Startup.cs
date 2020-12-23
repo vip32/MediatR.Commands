@@ -30,6 +30,7 @@ namespace Application.Web.Api
             services.AddMediatR(new[] { typeof(UserFindAllQuery).Assembly });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(DummyQueryBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheQueryBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheInvalidateCommandBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidateBehavior<,>));
 
             services.AddCommandEndpoints();
