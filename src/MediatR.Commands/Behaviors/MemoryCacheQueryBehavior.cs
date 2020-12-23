@@ -28,11 +28,11 @@
             var cacheKey = instance.CacheKey;
             if (this.cache.TryGetValue(cacheKey, out TResponse cachedResult))
             {
-                this.Logger.LogDebug("cache hit; key: '{cacheKey}'.", cacheKey);
+                this.Logger.LogDebug("query behavior: cache hit (key={cacheKey})", cacheKey);
                 return cachedResult;
             }
 
-            this.Logger.LogDebug("cache miss; key: '{cacheKey}'.", cacheKey);
+            this.Logger.LogDebug("query behavior: cache miss (key={cacheKey})", cacheKey);
 
             var result = await next().ConfigureAwait(false); // continue if not found in cache
             if (result == null)
@@ -46,7 +46,7 @@
                 entry.AbsoluteExpiration = instance.AbsoluteExpiration;
                 entry.SetValue(result);
 
-                this.Logger.LogDebug("cache set; key: '{cacheKey}'.", cacheKey);
+                this.Logger.LogDebug("query behavior: cache set (key={cacheKey})", cacheKey);
             }
 
             return result;

@@ -26,6 +26,7 @@
                 return await next().ConfigureAwait(false);
             }
 
+            this.Logger.LogDebug("query behavior: validate query");
             var validationResult = instance.Validate();
             if (!validationResult.IsValid)
             {
