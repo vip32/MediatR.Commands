@@ -97,9 +97,7 @@ namespace Application.Web.Api
         private void SeedCache(IApplicationBuilder app)
         {
             // seed the cache with test data.
-#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
             var cache = app.ApplicationServices.GetRequiredService<IMemoryCache>();
-#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
             var user1 = new User { FirstName = "John", LastName = "Doe01", Id = "aaa" };
             var user2 = new User { FirstName = "John", LastName = "Doe02", Id = "bbb" };
             cache.Set($"users_{user1.Id}", user1);

@@ -16,7 +16,7 @@
 
         public string UserId { get; set; }
 
-        public string CacheKey => nameof(UserFindByIdQuery);
+        public string CacheKey => $"{nameof(UserFindByIdQuery)}_{this.UserId}";
 
         public TimeSpan? SlidingExpiration => new TimeSpan(0, 0, 10);
 
