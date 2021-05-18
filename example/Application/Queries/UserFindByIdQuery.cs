@@ -9,14 +9,14 @@
         {
         }
 
-        public UserFindByIdQuery(string userId)
+        public UserFindByIdQuery(string id)
         {
-            this.UserId = userId;
+            this.Id = id;
         }
 
-        public string UserId { get; set; }
+        public string Id { get; set; }
 
-        public string CacheKey => $"{nameof(UserFindByIdQuery)}_{this.UserId}";
+        public string CacheKey => $"{nameof(UserFindByIdQuery)}_{this.Id}";
 
         public TimeSpan? SlidingExpiration => new TimeSpan(0, 0, 10);
 

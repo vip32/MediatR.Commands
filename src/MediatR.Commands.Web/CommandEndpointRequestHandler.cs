@@ -113,7 +113,8 @@
                 context.Response.StatusCode = (int)registration.Response.OnSuccessStatusCode;
                 context.Response.Headers.Add("Content-Type", registration.OpenApi?.Produces);
 
-                if(response == null && requestModel is IQuery && !typeof(IEnumerable<>).IsAssignableFrom(registration.ResponseType))
+                if(response == null && requestModel is IQuery
+                    && !typeof(IEnumerable<>).IsAssignableFrom(registration.ResponseType))
                 {
                     // query for single resource with no result > 404
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;

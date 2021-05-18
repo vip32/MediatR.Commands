@@ -16,9 +16,9 @@
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="MediatR" Version="9.0.0" />
-	<PackageReference Include="NSwag.AspNetCore" Version="13.9.4" />
-	<PackageReference Include="NJsonSchema" Version="10.3.2" />
-	<PackageReference Include="Humanizer.Core" Version="2.8.26" />
+	<PackageReference Include="NSwag.AspNetCore" Version="13.11.1" />
+	<PackageReference Include="NJsonSchema" Version="10.4.4" />
+	<PackageReference Include="Humanizer.Core" Version="2.10.1" />
   </ItemGroup>
 
   <ItemGroup>

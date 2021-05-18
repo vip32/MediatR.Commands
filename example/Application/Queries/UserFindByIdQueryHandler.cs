@@ -21,19 +21,19 @@
         {
             return Task.Run(() =>
             {
-                if (request.UserId.Equals("error", StringComparison.OrdinalIgnoreCase))
+                if (request.Id.Equals("error", StringComparison.OrdinalIgnoreCase))
                 {
                     // trigger a fake error
                     throw new ApplicationException("oops, error userid");
                 }
 
-                if (this.cache.TryGetValue($"users_{request.UserId}", out User user))
+                if (this.cache.TryGetValue($"users_{request.Id}", out User user))
                 {
-                    this.Logger.LogInformation($"USER FOUND: {request.UserId}");
+                    this.Logger.LogInformation($"USER FOUND: {request.Id}");
                     return user;
                 }
 
-                this.Logger.LogInformation($"USER NOT FOUND: {request.UserId}");
+                this.Logger.LogInformation($"USER NOT FOUND: {request.Id}");
                 return null; // TODO: this does not cause 404 not found response
             });
         }

@@ -132,11 +132,11 @@
             {
                 if (registration.RequestType.GetInterfaces().Contains(typeof(ICommand)))
                 {
-                    response.Value.Headers.Add("X-CommandId", new JsonSchema { Type = JsonObjectType.String });
+                    response.Value.Headers.Add("X-CommandId", new OpenApiHeader { Type = JsonObjectType.String });
                 }
                 else if (registration.RequestType.GetInterfaces().Contains(typeof(IQuery)))
                 {
-                    response.Value.Headers.Add("X-QueryId", new JsonSchema { Type = JsonObjectType.String });
+                    response.Value.Headers.Add("X-QueryId", new OpenApiHeader { Type = JsonObjectType.String });
                 }
             }
         }

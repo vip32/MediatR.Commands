@@ -14,7 +14,7 @@
             this.LastName = lastName;
         }
 
-        public string UserId { get; set; }
+        public string Id { get; set; }
 
         public string FirstName { get; set; }
 

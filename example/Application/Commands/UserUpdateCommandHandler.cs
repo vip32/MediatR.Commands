@@ -1,5 +1,6 @@
 ﻿namespace Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
@@ -22,15 +23,18 @@
             // request.UserId should be the value from the route > /users/123
             return Task.Run(() =>
             {
-                if (this.cache.TryGetValue($"users_{request.UserId}", out User user))
+                if (this.cache.TryGetValue($"users_{request.Id}", out User user))
                 {
                     user.FirstName = request.FirstName;
                     user.LastName = request.LastName;
 
                     this.Logger.LogInformation($"USER UPDATED: {user.Id}");
                 }
-
-                // TODO: bad request if user not found
+                else
+                {
+                    // TODO: bad request if user not found
+                    throw new Exception($"user {request.Id} not found");
+                }
 
                 return Unit.Task;
             });

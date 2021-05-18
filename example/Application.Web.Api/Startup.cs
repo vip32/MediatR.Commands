@@ -75,7 +75,7 @@ namespace Application.Web.Api
                     "/users", "User");
 
                 endpoints.MapGet<UserFindByIdQuery>(
-                    "/users/{userId}", "User");
+                    "/users/{id}", "User");
 
                 endpoints.MapPost<UserCreateCommand>(
                     "/users",
@@ -89,7 +89,7 @@ namespace Application.Web.Api
                     });
 
                 endpoints.MapPut<UserUpdateCommand>(
-                    "/users/{userId}", "User");
+                    "/users/{id}", "User");
             });
 
             this.SeedCache(app);
